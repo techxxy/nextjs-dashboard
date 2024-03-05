@@ -6,7 +6,7 @@ const pool = new Pool({
   database: process.env.POSTGRES_DATABASE,
   password: process.env.POSTGRES_PASSWORD,
   port: process.env.POSTGRES_PORT,
-  ssl: false
+  ssl: false,
 });
 
 const {
@@ -40,8 +40,9 @@ async function seedUsers(client) {
           INSERT INTO users (id, name, email, password)
           VALUES ($1, $2, $3, $4)
           ON CONFLICT (id) DO NOTHING;
-        `, [user.id, user.name, user.email, hashedPassword]);
-      })
+        `, [user.id, user.name, user.email, hashedPassword],
+        );
+      }),
     );
 
     console.log(`Seeded ${insertedUsers.length} users`);
@@ -74,13 +75,16 @@ async function seedCustomers(client) {
 
     // Insert data into the "customers" table
     const insertedCustomers = await Promise.all(
-      customers.map(
-        (customer) => { client.query(`
+      customers.map((customer) => {
+        client.query(
+          `
         INSERT INTO customers (id, name, email, image_url)
         VALUES ($1, $2, $3, $4)
         ON CONFLICT (id) DO NOTHING;
-        `, [customer.id, customer.name, customer.email, customer.image_url]);
-      })
+        `,
+          [customer.id, customer.name, customer.email, customer.image_url],
+        );
+      }),
     );
 
     console.log(`Seeded ${insertedCustomers.length} customers`);
@@ -114,13 +118,16 @@ async function seedInvoices(client) {
 
     // Insert data into the "invoices" table
     const insertedInvoices = await Promise.all(
-      invoices.map(
-        (invoice) => client.query(`
+      invoices.map((invoice) =>
+        client.query(
+          `
         INSERT INTO invoices (customer_id, amount, status, date)
         VALUES ($1, $2, $3, $4)
         ON CONFLICT (id) DO NOTHING;
-        `,[invoice.customer_id, invoice.amount, invoice.status, invoice.date])
-      )
+        `,
+          [invoice.customer_id, invoice.amount, invoice.status, invoice.date],
+        ),
+      ),
     );
 
     console.log(`Seeded ${insertedInvoices.length} invoices`);
@@ -149,13 +156,16 @@ async function seedRevenue(client) {
 
     // Insert data into the "revenue" table
     const insertedRevenue = await Promise.all(
-      revenue.map(
-        (rev) => client.query(`
+      revenue.map((rev) =>
+        client.query(
+          `
         INSERT INTO revenue (month, revenue)
         VALUES ($1, $2)
         ON CONFLICT (month) DO NOTHING;
-        `,[rev.month, rev.revenue ])
-      )
+        `,
+          [rev.month, rev.revenue],
+        ),
+      ),
     );
 
     console.log(`Seeded ${insertedRevenue.length} revenue`);
