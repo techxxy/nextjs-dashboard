@@ -1,16 +1,4 @@
 import { Pool } from 'pg';
-
-const port = process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT, 10) : undefined;
-
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DATABASE,
-  password: process.env.POSTGRES_PASSWORD,
-  port: port,
-  ssl: false,
-});
-
 import {
   CustomerField,
   CustomersTableType,
@@ -22,6 +10,16 @@ import {
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore } from 'next/cache';
+
+const port = process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT, 10) : undefined;
+const pool = new Pool({
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DATABASE,
+  password: process.env.POSTGRES_PASSWORD,
+  port: port,
+  ssl: false,
+});
 
 export async function fetchRevenue() {
   try {
@@ -107,26 +105,36 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     const client = await pool.connect();
-    const invoices = await client.query<InvoicesTable>(`
-      SELECT
-        invoices.id,
-        invoices.amount,
-        invoices.date,
-        invoices.status,
-        customers.name,
-        customers.email,
-        customers.image_url
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      WHERE
-        customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`} OR
-        invoices.amount::text ILIKE ${`%${query}%`} OR
-        invoices.date::text ILIKE ${`%${query}%`} OR
-        invoices.status ILIKE ${`%${query}%`}
-      ORDER BY invoices.date DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `);
+    const invoicesQuery = `
+    SELECT
+      invoices.id,
+      invoices.amount,
+      invoices.date,
+      invoices.status,
+      customers.name,
+      customers.email,
+      customers.image_url
+    FROM invoices
+    JOIN customers ON invoices.customer_id = customers.id
+    WHERE
+      customers.name ILIKE $1 OR
+      customers.email ILIKE $2 OR
+      invoices.amount::text ILIKE $3 OR
+      invoices.date::text ILIKE $4 OR
+      invoices.status ILIKE $5
+    ORDER BY invoices.date DESC
+    LIMIT $6 OFFSET $7
+  `;
+  
+  const invoices = await client.query<InvoicesTable>(invoicesQuery, [
+    `%${query}%`,
+    `%${query}%`,
+    `%${query}%`,
+    `%${query}%`,
+    `%${query}%`,
+    ITEMS_PER_PAGE,
+    offset
+  ]);
     client.release(); // Release the client back to the pool
     return invoices.rows;
   } catch (error) {
@@ -139,17 +147,23 @@ export async function fetchInvoicesPages(query: string) {
   unstable_noStore();
   try {
     const client = await pool.connect();
-
-    const count = await client.query(`SELECT COUNT(*)
+    const queryText = `SELECT COUNT(*)
     FROM invoices
     JOIN customers ON invoices.customer_id = customers.id
     WHERE
-      customers.name ILIKE ${`%${query}%`} OR
-      customers.email ILIKE ${`%${query}%`} OR
-      invoices.amount::text ILIKE ${`%${query}%`} OR
-      invoices.date::text ILIKE ${`%${query}%`} OR
-      invoices.status ILIKE ${`%${query}%`}
-  `);
+      customers.name ILIKE $1 OR
+      customers.email ILIKE $2 OR
+      invoices.amount::text ILIKE $3 OR
+      invoices.date::text ILIKE $4 OR
+      invoices.status ILIKE $5
+  `;
+  const count = await client.query(queryText, [
+    `%${query}%`,
+    `%${query}%`,
+    `%${query}%`,
+    `%${query}%`,
+    `%${query}%`
+  ]);
   client.release(); // Release the client back to the pool
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
     return totalPages;
@@ -163,15 +177,17 @@ export async function fetchInvoiceById(id: string) {
   unstable_noStore();
   try {
     const client = await pool.connect();
-    const data = await client.query<InvoiceForm>(`
-      SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
-    `);
+    const dataQuery = `
+    SELECT
+      invoices.id,
+      invoices.customer_id,
+      invoices.amount,
+      invoices.status
+    FROM invoices
+    WHERE invoices.id = $1
+  `;
+  const data = await client.query<InvoiceForm>(dataQuery, [id]);
+
     client.release(); // Release the client back to the pool
 
     const invoice = data.rows.map((invoice) => ({
