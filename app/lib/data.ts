@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import getDatabasePool from './db';
 import {
   CustomerField,
   CustomersTableType,
@@ -11,15 +11,7 @@ import {
 import { formatCurrency } from './utils';
 import { unstable_noStore } from 'next/cache';
 
-const port = process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT, 10) : undefined;
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DATABASE,
-  password: process.env.POSTGRES_PASSWORD,
-  port: port,
-  ssl: false,
-});
+const pool = getDatabasePool();
 
 export async function fetchRevenue() {
   try {

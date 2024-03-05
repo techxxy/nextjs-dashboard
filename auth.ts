@@ -2,21 +2,11 @@ import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
-import { Pool } from 'pg';
+import getDatabasePool from './app/lib/db';
 import type { User } from '@/app/lib/definitions';
 import bcrypt from 'bcrypt';
 
-const port = process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT, 10) : undefined;
-
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DATABASE,
-  password: process.env.POSTGRES_PASSWORD,
-  port: port,
-  ssl: false,
-});
-
+const pool = getDatabasePool();
 
 async function getUser(email: string): Promise<User | undefined> {
     try {

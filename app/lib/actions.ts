@@ -1,7 +1,7 @@
 'use server';
 
 import {z} from 'zod';
-import { Pool } from 'pg';
+import getDatabasePool from './db';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { signIn } from '@/auth';
@@ -24,15 +24,7 @@ const FormSchema = z.object({
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 const UpdateInvoice = FormSchema.omit({id:true, date:true});
 
-const port = process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT, 10) : undefined;
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DATABASE,
-  password: process.env.POSTGRES_PASSWORD,
-  port: port,
-  ssl: false,
-});
+const pool = getDatabasePool();
 
 // This is temporary until @types/react-dom is updated
 export type State = {
