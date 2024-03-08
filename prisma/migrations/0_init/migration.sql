@@ -26,18 +26,25 @@ CREATE TABLE "revenue" (
 );
 
 -- CreateTable
-CREATE TABLE "users" (
-    "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
-    "name" VARCHAR(255) NOT NULL,
-    "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+CREATE TABLE "user" (
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "email" VARCHAR(255) NOT NULL,
+    "emailVerifiedAt" TIMESTAMP(3),
+    "emailVerifToken" VARCHAR(255),
+    "password" VARCHAR(255) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "revenue_month_key" ON "revenue"("month");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
+
+-- AddForeignKey
+ALTER TABLE "invoices" ADD CONSTRAINT "invoices_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 

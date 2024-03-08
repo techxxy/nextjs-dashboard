@@ -1,49 +1,42 @@
-import getDatabasePool from './db';
-import {
-  CustomerField,
-  CustomersTableType,
-  InvoiceForm,
-  InvoicesTable,
-  LatestInvoiceRaw,
-  User,
-  Revenue,
-} from './definitions';
+import db from '@/db'
 import { formatCurrency } from './utils';
-import { unstable_noStore } from 'next/cache';
-
-const pool = getDatabasePool();
 
 export async function fetchRevenue() {
   try {
-    const client = await pool.connect(); // Get a client from the pool
-    console.log('Fetching revenue data...');
-    //await new Promise((resolve) => setTimeout(resolve, 3000));
-    const data = await client.query<Revenue>('SELECT * FROM revenue');
-    client.release(); // Release the client back to the pool
-
-    console.log('Data fetch completed after 3 seconds.');
-    return data.rows;
+    const revenueData = await db.revenue.findMany();
+    return revenueData;
   } catch (error) {
     console.error('Error fetching revenue data:', error);
-    throw error; // Throw the error for the caller to handle
+    throw error;
   }
 }
 
 export async function fetchLatestInvoices() {
-  unstable_noStore();
   try {
-    const client = await pool.connect();
-    const data = await client.query<LatestInvoiceRaw>(`
-      SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      ORDER BY invoices.date DESC
-      LIMIT 5`);
-    const latestInvoices = data.rows.map((invoice) => ({
-      ...invoice,
-      amount: formatCurrency(invoice.amount),
-    }));
-    client.release(); // Release the client back to the pool
+    const latestInvoices = await db.invoices.findMany({
+      select: {
+        id: true,
+        amount: true,
+        date: true,
+        customer: {
+          select: {
+            name: true,
+            email: true,
+            image_url: true,
+          },
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+      take: 5,
+    });
+
+    // Format currency for each invoice
+    latestInvoices.forEach(invoice => {
+      invoice.amount = formatCurrency(invoice.amount);
+    });
+
     return latestInvoices;
   } catch (error) {
     console.error('Error fetching the latest invoices:', error);
@@ -53,30 +46,29 @@ export async function fetchLatestInvoices() {
 
 export async function fetchCardData() {
   try {
-    // You can probably combine these into a single SQL query
-    // However, we are intentionally splitting them to demonstrate
-    // how to initialize multiple queries in parallel with JS.
-    const client = await pool.connect();
+    const numberOfInvoices = await db.invoices.count();
+    const numberOfCustomers = await db.customers.count();
+    const paidInvoiceStatus = await db.invoices.aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: {
+        status: 'paid', // Filter for invoices with status "paid"
+      },
+    });
+    const pendingInvoiceStatus = await db.invoices.aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: {
+        status: 'pending', 
+      },
+    });
 
-    const invoiceCountPromise = client.query(`SELECT COUNT(*) FROM invoices`);
-    const customerCountPromise = client.query(`SELECT COUNT(*) FROM customers`);
-    const invoiceStatusPromise = client.query(`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`);
+    // Extract the sum of paid and pending invoices
+    const totalPaidInvoices = formatCurrency(paidInvoiceStatus._sum.amount ?? 0);
+    const totalPendingInvoices = formatCurrency(pendingInvoiceStatus._sum.amount ?? 0);
 
-    const data = await Promise.all([
-      invoiceCountPromise,
-      customerCountPromise,
-      invoiceStatusPromise,
-    ]);
-
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
-
-    client.release(); // Release the client back to the pool
     return {
       numberOfCustomers,
       numberOfInvoices,
@@ -90,105 +82,73 @@ export async function fetchCardData() {
 }
 
 const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredInvoices(
-  query: string,
-  currentPage: number,
-) {
+export async function fetchFilteredInvoices(query: string, currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
-    const client = await pool.connect();
-    const invoicesQuery = `
-    SELECT
-      invoices.id,
-      invoices.amount,
-      invoices.date,
-      invoices.status,
-      customers.name,
-      customers.email,
-      customers.image_url
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
-    WHERE
-      customers.name ILIKE $1 OR
-      customers.email ILIKE $2 OR
-      invoices.amount::text ILIKE $3 OR
-      invoices.date::text ILIKE $4 OR
-      invoices.status ILIKE $5
-    ORDER BY invoices.date DESC
-    LIMIT $6 OFFSET $7
-  `;
-  
-  const invoices = await client.query<InvoicesTable>(invoicesQuery, [
-    `%${query}%`,
-    `%${query}%`,
-    `%${query}%`,
-    `%${query}%`,
-    `%${query}%`,
-    ITEMS_PER_PAGE,
-    offset
-  ]);
-    client.release(); // Release the client back to the pool
-    return invoices.rows;
+    const invoices = await db.invoice.findMany({
+      where: {
+        OR: [
+          { customer: { name: { contains: query } } },
+          { customer: { email: { contains: query } } },
+          { amount: { contains: query } },
+          { date: { contains: query } },
+          { status: { contains: query } },
+        ],
+      },
+      include: {
+        customer: true,
+      },
+      orderBy: {
+        date: 'desc',
+      },
+      take: ITEMS_PER_PAGE,
+      skip: offset,
+    });
+
+
+
+    return invoices;
   } catch (error) {
     console.error('Error fetching invoices:', error);
     throw error;
   }
 }
 
-export async function fetchInvoicesPages(query: string) {
-  unstable_noStore();
+/* export async function fetchInvoicesPages(query: string) {
   try {
-    const client = await pool.connect();
-    const queryText = `SELECT COUNT(*)
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
-    WHERE
-      customers.name ILIKE $1 OR
-      customers.email ILIKE $2 OR
-      invoices.amount::text ILIKE $3 OR
-      invoices.date::text ILIKE $4 OR
-      invoices.status ILIKE $5
-  `;
-  const count = await client.query(queryText, [
-    `%${query}%`,
-    `%${query}%`,
-    `%${query}%`,
-    `%${query}%`,
-    `%${query}%`
-  ]);
-  client.release(); // Release the client back to the pool
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    const count = await db.invoices.count({
+      where: {
+        OR: [
+          { customer: { name: { contains: query } } },
+          { customer: { email: { contains: query } } },
+          { amount: { contains: query } },
+          { date: { contains: query } },
+          { status: { contains: query } },
+        ],
+      },
+    });
+
+    const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Error fetching total number of invoices:', error);
     throw error;
   }
-}
+} */
 
 export async function fetchInvoiceById(id: string) {
-  unstable_noStore();
   try {
-    const client = await pool.connect();
-    const dataQuery = `
-    SELECT
-      invoices.id,
-      invoices.customer_id,
-      invoices.amount,
-      invoices.status
-    FROM invoices
-    WHERE invoices.id = $1
-  `;
-  const data = await client.query<InvoiceForm>(dataQuery, [id]);
+    const invoice = await db.invoices.findUnique({
+      where: {
+        id: id,
+      },
+    });
 
-    client.release(); // Release the client back to the pool
+    if (!invoice) {
+      throw new Error('Invoice not found');
+    }
 
-    const invoice = data.rows.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
-    }));
-    console.log(invoice); // Invoice is an empty array []
-    return invoice[0];
+    return invoice;
   } catch (error) {
     console.error('Error fetching invoice by id:', error);
     throw error;
@@ -196,20 +156,17 @@ export async function fetchInvoiceById(id: string) {
 }
 
 export async function fetchCustomers() {
-  unstable_noStore();
   try {
+    const customers = await db.customers.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
 
-    const client = await pool.connect();
-    const data = await client.query<CustomerField>(`
-      SELECT
-        id,
-        name
-      FROM customers
-      ORDER BY name ASC
-    `);
-    client.release();
-
-    const customers = data.rows;
     return customers;
   } catch (error) {
     console.error('Error fetching all customers:', error);
@@ -218,34 +175,38 @@ export async function fetchCustomers() {
 }
 
 export async function fetchFilteredCustomers(query: string) {
-  unstable_noStore();
   try {
+    const customers = await db.customers.findMany({
+      where: {
+        OR: [
+          { name: { contains: query } },
+          { email: { contains: query } },
+        ],
+      },
+      orderBy: {
+        name: 'asc',
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image_url: true,
+        invoices: {
+          select: {
+            id: true,
+            amount: true,
+            status: true,
+          },
+        },
+      },
+    });
 
-    const client = await pool.connect();
-    const data = await client.query<CustomersTableType>(`
-		SELECT
-		  customers.id,
-		  customers.name,
-		  customers.email,
-		  customers.image_url,
-		  COUNT(invoices.id) AS total_invoices,
-		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
-		  SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS total_paid
-		FROM customers
-		LEFT JOIN invoices ON customers.id = invoices.customer_id
-		WHERE
-		  customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`}
-		GROUP BY customers.id, customers.name, customers.email, customers.image_url
-		ORDER BY customers.name ASC
-	  `);
-    client.release(); 
-
-    const customers = data.rows.map((customer) => ({
-      ...customer,
-      total_pending: formatCurrency(customer.total_pending),
-      total_paid: formatCurrency(customer.total_paid),
-    }));
+    customers.forEach(customer => {
+      customer.invoices.forEach(invoice => {
+        invoice.total_pending = formatCurrency(invoice.total_pending);
+        invoice.total_paid = formatCurrency(invoice.total_paid);
+      });
+    });
 
     return customers;
   } catch (error) {
@@ -256,12 +217,13 @@ export async function fetchFilteredCustomers(query: string) {
 
 export async function getUser(email: string) {
   try {
+    const user = await prisma.users.findUnique({
+      where: {
+        email: email,
+      },
+    });
 
-    const client = await pool.connect();
-    const user = await client.query(`SELECT * FROM users WHERE email=${email}`);
-    client.release();
-
-    return user.rows[0] as User;
+    return user;
   } catch (error) {
     console.error('Error fetching user:', error);
     throw error;

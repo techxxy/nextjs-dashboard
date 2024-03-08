@@ -7,24 +7,22 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { Button } from './button';
+import { Button } from '../button';
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/actions/auth';
+import { authenticate } from '@/app/lib/actions';
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { signUp } from "@/actions/auth";
 
-export default function LoginForm() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
-
-  if (errorMessage?.startsWith("EMAIL_NOT_VERIFIED")) {
-    redirect(`/email/verify/send?email=${errorMessage.split(":")[1]}`);
-  }
+export default function SignUpForm() {
+  const [errorMessage, dispatch] = useFormState(signUp, {
+    errors: {},
+});
 
   return (
     <form action={dispatch} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
-          Please log in to continue.
+          Create your account
         </h1>
         <div className="w-full">
           <div>
@@ -67,23 +65,19 @@ export default function LoginForm() {
             </div>
           </div>
         </div>
-        <LoginButton />
-        <div
-          className="flex h-8 items-end space-x-1"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          {errorMessage && (
+        <SignupButton />
+        <div className="flex h-8 items-end space-x-1" aria-live="polite" aria-atomic="true">
+          {errorMessage.errors && errorMessage.errors.email && (
             <>
               <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-              <p className="text-sm text-red-500">{errorMessage}</p>
+              <p className="text-sm text-red-500">{errorMessage.errors.email}</p>
             </>
           )}
         </div>
         <div className="">
-            Don&apos;t have an account?&nbsp;
-            <Link className="underline" href="/signup">
-              Sign Up
+            Alreay habe an account?&nbsp;
+            <Link className="underline" href="/login">
+              Login
             </Link>
         </div>
       </div>
@@ -91,12 +85,12 @@ export default function LoginForm() {
   );
 }
 
-function LoginButton() {
+function SignupButton() {
   const { pending } = useFormStatus();
 
   return (
     <Button className="mt-4 w-full" aria-disabled={pending}>
-      Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+      Sign Up <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );
 }
