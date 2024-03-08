@@ -92,7 +92,7 @@ export async function signUp(formState: SignUpFormState, formData: FormData):
     // create user data
     user = await db.user.create({
       data: {
-        name: result.data.name,
+        //name: result.data.name,
         email: result.data.email,
         password: hashed,
         emailVerifToken: verificationToken,

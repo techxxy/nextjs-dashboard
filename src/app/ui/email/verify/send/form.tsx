@@ -4,7 +4,7 @@
 import { useFormState } from "react-dom";
 import ResendButton from "./resend-button";
 import { useSearchParams } from "next/navigation";
-import { resendVerificationEmail } from "@/actions/auth";
+import { resendVerificationEmail } from "@/app/actions/auth";
 
 export default function Form() {
     // Accessing search parameters from the URL

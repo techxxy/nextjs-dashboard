@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { db } from '@/db'
+import { db } from '@/db';
  
 export const metadata: Metadata = {
   title: 'Customer',
