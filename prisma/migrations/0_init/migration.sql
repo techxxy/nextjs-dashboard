@@ -26,7 +26,7 @@ CREATE TABLE "revenue" (
 );
 
 -- CreateTable
-CREATE TABLE "user" (
+ALTER TABLE "user" to "users" (
     "id" TEXT NOT NULL,
     "name" TEXT,
     "email" VARCHAR(255) NOT NULL,
@@ -40,10 +40,10 @@ CREATE TABLE "user" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "revenue_month_key" ON "revenue"("month");
+ALTER UNIQUE INDEX "revenue_month_key" ON "revenue"("month");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
+ALTER UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- AddForeignKey
 ALTER TABLE "invoices" ADD CONSTRAINT "invoices_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

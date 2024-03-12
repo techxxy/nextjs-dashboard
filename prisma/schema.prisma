@@ -8,29 +8,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model customers {
+model Customer {
   id        String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name      String     @db.VarChar(255)
   email     String     @db.VarChar(255)
   image_url String     @db.VarChar(255)
-  invoices  invoices[]
-}
+  invoice  Invoice[]
+  @@map("customers")
+} 
 
-model invoices {
+model Invoice {
   id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   customer_id String    @db.Uuid
   amount      Int
   status      String    @db.VarChar(255)
   date        DateTime  @db.Date
-  customer    customers @relation(fields: [customer_id], references: [id])
+  customer    Customer @relation(fields: [customer_id], references: [id])
+  @@map("invoices")
 }
 
-model revenue {
+model Revenue {
   month   String @unique @db.VarChar(4)
   revenue Int
+  @@map("revenue")
 }
 
-model user {
+model User {
   id              String    @id @default(cuid())
   name            String?   
   email           String    @unique @db.VarChar(255)
@@ -39,4 +42,5 @@ model user {
   password        String    @db.VarChar(255)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  @@map("users")
 }

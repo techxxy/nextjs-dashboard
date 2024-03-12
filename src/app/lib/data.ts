@@ -13,7 +13,7 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
-    const latestInvoices = await db.invoices.findMany({
+    const latestInvoices = await db.invoice.findMany({
       select: {
         id: true,
         amount: true,
@@ -33,8 +33,8 @@ export async function fetchLatestInvoices() {
     });
 
     // Format currency for each invoice
-    latestInvoices.forEach(invoice => {
-      invoice.amount = formatCurrency(invoice.amount);
+    latestInvoices.forEach(item => {
+      item.amount = formatCurrency(item.amount);
     });
 
     return latestInvoices;
@@ -46,9 +46,9 @@ export async function fetchLatestInvoices() {
 
 export async function fetchCardData() {
   try {
-    const numberOfInvoices = await db.invoices.count();
-    const numberOfCustomers = await db.customers.count();
-    const paidInvoiceStatus = await db.invoices.aggregate({
+    const numberOfInvoices = await db.invoice.count();
+    const numberOfCustomers = await db.customer.count();
+    const paidInvoiceStatus = await db.invoice.aggregate({
       _sum: {
         amount: true,
       },
@@ -56,7 +56,7 @@ export async function fetchCardData() {
         status: 'paid', // Filter for invoices with status "paid"
       },
     });
-    const pendingInvoiceStatus = await db.invoices.aggregate({
+    const pendingInvoiceStatus = await db.invoice.aggregate({
       _sum: {
         amount: true,
       },
@@ -84,17 +84,25 @@ export async function fetchCardData() {
 const ITEMS_PER_PAGE = 6;
 export async function fetchFilteredInvoices(query: string, currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
   try {
+    // Prepare the where clause based on the query
+    const whereClause: any = {
+      OR: [
+        { customer: { name: { contains: query } } },
+        { customer: { email: { contains: query } } },
+        { status: { contains: query } },
+      ],
+    };
+
+    // Add the amount filter only if the query is a valid number
+    const amountQuery = parseFloat(query);
+    if (!isNaN(amountQuery)) {
+      whereClause.OR.push({ amount: amountQuery });
+    }
+
     const invoices = await db.invoice.findMany({
-      where: {
-        OR: [
-          { customer: { name: { contains: query } } },
-          { customer: { email: { contains: query } } },
-          { amount: { contains: query } },
-          { date: { contains: query } },
-          { status: { contains: query } },
-        ],
-      },
+      where: whereClause,
       include: {
         customer: true,
       },
@@ -105,8 +113,6 @@ export async function fetchFilteredInvoices(query: string, currentPage: number) 
       skip: offset,
     });
 
-
-
     return invoices;
   } catch (error) {
     console.error('Error fetching invoices:', error);
@@ -114,18 +120,25 @@ export async function fetchFilteredInvoices(query: string, currentPage: number) 
   }
 }
 
-/* export async function fetchInvoicesPages(query: string) {
+export async function fetchInvoicesPages(query: string) {
   try {
-    const count = await db.invoices.count({
-      where: {
-        OR: [
-          { customer: { name: { contains: query } } },
-          { customer: { email: { contains: query } } },
-          { amount: { contains: query } },
-          { date: { contains: query } },
-          { status: { contains: query } },
-        ],
-      },
+    // Prepare the where clause based on the query
+    const whereClause: any = {
+      OR: [
+        { customer: { name: { contains: query } } },
+        { customer: { email: { contains: query } } },
+        { status: { contains: query } },
+      ],
+    };
+
+    // Add the amount filter only if the query is a valid number
+    const amountQuery = parseFloat(query);
+    if (!isNaN(amountQuery)) {
+      whereClause.OR.push({ amount: amountQuery });
+    }
+
+    const count = await db.invoice.count({
+      where: whereClause,
     });
 
     const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
@@ -134,11 +147,11 @@ export async function fetchFilteredInvoices(query: string, currentPage: number) 
     console.error('Error fetching total number of invoices:', error);
     throw error;
   }
-} */
+}
 
 export async function fetchInvoiceById(id: string) {
   try {
-    const invoice = await db.invoices.findUnique({
+    const invoice = await db.invoice.findUnique({
       where: {
         id: id,
       },
@@ -157,7 +170,7 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
-    const customers = await db.customers.findMany({
+    const customers = await db.customer.findMany({
       orderBy: {
         name: 'asc',
       },
@@ -176,7 +189,7 @@ export async function fetchCustomers() {
 
 export async function fetchFilteredCustomers(query: string) {
   try {
-    const customers = await db.customers.findMany({
+    const customers = await db.customer.findMany({
       where: {
         OR: [
           { name: { contains: query } },
@@ -191,7 +204,7 @@ export async function fetchFilteredCustomers(query: string) {
         name: true,
         email: true,
         image_url: true,
-        invoices: {
+        invoice: {
           select: {
             id: true,
             amount: true,
@@ -202,9 +215,9 @@ export async function fetchFilteredCustomers(query: string) {
     });
 
     customers.forEach(customer => {
-      customer.invoices.forEach(invoice => {
-        invoice.total_pending = formatCurrency(invoice.total_pending);
-        invoice.total_paid = formatCurrency(invoice.total_paid);
+      customer.invoice.forEach(item => {
+        item.total_pending = formatCurrency(item.total_pending);
+        item.total_paid = formatCurrency(item.total_paid);
       });
     });
 
@@ -217,7 +230,7 @@ export async function fetchFilteredCustomers(query: string) {
 
 export async function getUser(email: string) {
   try {
-    const user = await prisma.users.findUnique({
+    const user = await db.user.findUnique({
       where: {
         email: email,
       },

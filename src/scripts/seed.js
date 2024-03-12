@@ -13,11 +13,11 @@ const {
   invoices,
   customers,
   revenue,
-  users,
+  //users,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
-async function seedUsers(client) {
+/* async function seedUsers(client) {
   try {
     await client.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
     // Create the "users" table if it doesn't exist
@@ -55,7 +55,7 @@ async function seedUsers(client) {
     console.error('Error seeding users:', error);
     throw error;
   }
-}
+} */
 
 async function seedCustomers(client) {
   try {
@@ -184,7 +184,7 @@ async function main() {
   const client = await pool.connect();
   console.log('connected');
   try {
-    await seedUsers(client);
+    //await seedUsers(client);
     await seedCustomers(client);
     await seedInvoices(client);
     await seedRevenue(client);
