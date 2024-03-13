@@ -56,7 +56,7 @@ const documentKeyPressed = (
       convertedValue = event.key; // For other keys, use the key itself
     }
   } else if(event.key === 'Backspace') {
-    convertedValue = 'Backpace';
+    convertedValue = 'Backspace';
   } else {
     console.log("special key inputed: ", event); // For special keys
   }

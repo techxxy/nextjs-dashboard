@@ -11,84 +11,82 @@ const isNotKorean = (text: string) => {
   return !koreanCheck.test(text);
 };
 
+const handleBackspace = (
+  completedLetters: string,
+  composingLetter: string,
+  superDelete: boolean,
+): HandlerResults => {
+  console.log('Lets handle backspace');
+  
+  if (superDelete || composingLetter.length === 0) {
+    // Handle deletion of completedLetters
+    if (completedLetters.length === 0) {
+      // No more characters to delete
+      return {
+        completedLetters,
+        composingLetter: '',
+        superDelete: true,
+      };
+    } else {
+      // Remove the last character from completedLetters
+      return {
+        completedLetters: completedLetters.slice(0, -1),
+        composingLetter: '',
+        superDelete: true,
+      };
+    }
+  } else {
+    // Handle deletion of composingLetter
+    const lastLetterGroup = Hangul.disassemble(composingLetter);
+    if (lastLetterGroup.length > 0) {
+      // Remove the last character from composingLetter
+      const newComposingLetter = Hangul.assemble(lastLetterGroup.slice(0, -1));
+      return {
+        completedLetters,
+        composingLetter: newComposingLetter,
+        superDelete: true,
+      };
+    } else {
+      // No more characters to delete
+      return {
+        completedLetters,
+        composingLetter: '',
+        superDelete: true,
+      };
+    }
+  }
+};
+
 const useHangulInputHandler = (
   completedLetters: string,
   composingLetter: string,
   superDelete: boolean,
   newChar: string,
-) => {
+): HandlerResults => {
   if (newChar.length === 1) {
-    if (isNotKorean(newChar) == true) {
-      completedLetters = completedLetters + composingLetter + newChar; //ㄱ ㅏ ㄴ ㄴ a -> 간ㄴa
+    if (isNotKorean(newChar)) {
+      completedLetters += composingLetter + newChar;
       composingLetter = '';
     } else {
-      // ㄱㅏㅂㅅㅏ -> 갑 & 사
       composingLetter += newChar;
-      var assembled = Hangul.a(Hangul.d(composingLetter));
+      const assembled = Hangul.a(Hangul.d(composingLetter));
       composingLetter = assembled;
 
-      if (assembled.length == 2) {
-        // 값 + ㅏ -> 갑 & 사
+      if (assembled.length === 2) {
         completedLetters += assembled.slice(0, -1);
         composingLetter = assembled.slice(-1);
       }
     }
-  } else {
-    console.log('Lets handle backspace');
-
-    if ((newChar == 'Backspace')) {
-      var newAllLetters = completedLetters + composingLetter;
-      var lastLetterGroup = Hangul.disassemble(composingLetter);
-      var text = completedLetters + composingLetter;
-      // checking last letter is korean
-
-      var a = ''; // After delete Char
-      if (text.length == 0) {
-        // test: "" + backspace
-      } else if (isNotKorean(composingLetter) == true || superDelete == true) {
-        // test: "alphanumeric" + backspace
-        completedLetters = text.slice(0, -1);
-        composingLetter = '';
-        superDelete = true;
-      } else if (lastLetterGroup.length == 1 && superDelete == false) {
-        // test: "딸ㄲ" + backspace
-        if (lastLetterGroup[0] == 'ㄲ') {
-          a = 'ㄱ';
-        } else if (lastLetterGroup[0] == 'ㄸ') {
-          a = 'ㄷ';
-        } else if (lastLetterGroup[0] == 'ㅃ') {
-          a = 'ㅂ';
-        } else if (lastLetterGroup[0] == 'ㅆ') {
-          a = 'ㅅ';
-        } else if (lastLetterGroup[0] == 'ㅉ') {
-          a = 'ㅈ';
-        } else {
-        }
-        composingLetter = a;
-        superDelete = true;
-      } else if (lastLetterGroup.length == 2 && superDelete == false) {
-        //test: "딸까" + backspace
-        composingLetter = Hangul.assemble(lastLetterGroup.slice(0, -1));
-      } else if (lastLetterGroup.length == 3 && superDelete == false) {
-        // test: "딸깎" + backspace
-        composingLetter = Hangul.assemble(lastLetterGroup.slice(0, -1));
-        lastLetterGroup[2] = newChar;
-        composingLetter = Hangul.assemble(lastLetterGroup);
-      } else if (lastLetterGroup.length == 4 && superDelete == false) {
-        //test: "딸값" + backspace
-
-        composingLetter = Hangul.assemble(lastLetterGroup.slice(0, -1));
-      }
-      console.log('backspaceed ending....');
-    }
-
+  } else if (newChar === 'Backspace') {
+    console.log("BackspaceBackspaceBackspaceBackspaceBackspace");
+    return handleBackspace(completedLetters, composingLetter, superDelete);
   }
-  const myInstance: HandlerResults = {
-    completedLetters: completedLetters,
-    composingLetter: composingLetter,
-    superDelete: superDelete,
+
+  return {
+    completedLetters,
+    composingLetter,
+    superDelete,
   };
-  return myInstance;
 };
 
 export default useHangulInputHandler;
