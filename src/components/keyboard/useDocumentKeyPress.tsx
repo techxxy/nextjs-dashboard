@@ -34,9 +34,8 @@ const documentKeyPressed = (
   let convertedValue: string | undefined;
   let index: number | undefined;
 
-  if (event.key.length === 1) { // If the key pressed is a single character (excluding special keys)
-    if (event.code.startsWith('Digit')) {
-      // Use the character as it is for digits
+  if (event.key.length === 1) { // If single character like symbols #!
+    if (event.code.startsWith('Digit')) { // if number keys
       convertedValue = event.key;
     } else if (event.code.startsWith('Key')) {
       // For other keys starting with 'Key'
@@ -56,6 +55,8 @@ const documentKeyPressed = (
     } else {
       convertedValue = event.key; // For other keys, use the key itself
     }
+  } else if(event.key === 'Backspace') {
+    convertedValue = 'Backpace';
   } else {
     console.log("special key inputed: ", event); // For special keys
   }
@@ -74,11 +75,11 @@ const useDocumentKeyPress = (callback: KeyPressedCallback) => {
     };
 
     // Add event listener for key press events on the document
-    document.addEventListener('keypress', handleKeyPress); 
+    document.addEventListener('keydown', handleKeyPress); 
 
     // Cleanup function to remove the event listener
     return () => {
-      document.removeEventListener('keypress', handleKeyPress);
+      document.removeEventListener('keydown', handleKeyPress);
     };
   }, [callback]); // Depend on the callback function
 };

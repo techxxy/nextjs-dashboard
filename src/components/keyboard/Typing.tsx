@@ -8,24 +8,27 @@ import useHangulInputHandler from './hangulInputHandler'; // Import custom hook 
 
 const Typing: React.FC = () => {
   // State variables
-  const [inputValue, setInputValue] = useState<string>(''); // State for input value
   const [selectedLayout, setSelectedLayout] = useState<string>('german'); // State for selected keyboard layout
   const [isShiftPressed, setIsShiftPressed] = useState<boolean>(false); // State for shift key status
  // const { handleHangulInput } = useHangulInputHandler(); // Custom hook for Hangul input handling
   const [completedLetters, setCompletedLetters] = useState<string>('');
   const [composingLetter, setComposingLetter] = useState<string>('');
+  const [superDelete, setSuperDelete] = useState<boolean>(false); // State for shift key status
+
 
   // Effect hook to handle key presses on the document
-    useDocumentKeyPress((key) => {
-    const results = useHangulInputHandler(completedLetters, composingLetter, key);
+    useDocumentKeyPress((key) => { // Real keyboard handler
+    const results = useHangulInputHandler(completedLetters, composingLetter, superDelete, key);
     setCompletedLetters(results.completedLetters);
     setComposingLetter(results.composingLetter);
+    setSuperDelete(results.superDelete);
   });
 
-  const handleVirtualKeyInput = (value: string) => {
-    const results = useHangulInputHandler(completedLetters, composingLetter, value);
+  const handleVirtualKeyInput = (value: string) => { // Virtual keyboard handler
+    const results = useHangulInputHandler(completedLetters, composingLetter, superDelete, value);
     setCompletedLetters(results.completedLetters);
     setComposingLetter(results.composingLetter);
+    setSuperDelete(results.superDelete);
   };
 
   // Function to handle layout change
@@ -44,7 +47,6 @@ const Typing: React.FC = () => {
   return (
     <div>
       <p className='w-2/3 h-11'> {completedLetters + composingLetter} </p>
-      <input type="text" value={completedLetters + composingLetter} readOnly className='w-2/3'/>
       <KeyboardSelector
         selectedLayout={selectedLayout}
         onSelectLayout={handleLayoutChange}

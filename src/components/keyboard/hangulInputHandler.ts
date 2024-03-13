@@ -1,108 +1,94 @@
-import { useState } from 'react'; // Importing useState hook from React
 import Hangul from 'hangul-js'; // Importing Hangul module
-import { any } from 'zod'; // Importing any from zod module (seems unused)
 
 type HandlerResults = {
   completedLetters: string;
   composingLetter: string;
+  superDelete: boolean;
 };
 
 const isNotKorean = (text: string) => {
-  const koreanCheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // Regular expression to match Korean characters
-  return !koreanCheck.test(text); // Return true if text does not match Korean characters
+  const koreanCheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+  return !koreanCheck.test(text);
 };
 
 const useHangulInputHandler = (
   completedLetters: string,
   composingLetter: string,
+  superDelete: boolean,
   newChar: string,
 ) => {
-  if (isNotKorean(newChar) == true) {
-    completedLetters = completedLetters + composingLetter + newChar; //ㄱ ㅏ ㄴ ㄴ a -> 간ㄴa
-    composingLetter = '';
-  } else {
-    // ㄱㅏㅂㅅㅏ -> 갑 & 사
-    composingLetter += newChar;
-    var assembled = Hangul.a(Hangul.d(composingLetter));
-    composingLetter = assembled;
+  if (newChar.length === 1) {
+    if (isNotKorean(newChar) == true) {
+      completedLetters = completedLetters + composingLetter + newChar; //ㄱ ㅏ ㄴ ㄴ a -> 간ㄴa
+      composingLetter = '';
+    } else {
+      // ㄱㅏㅂㅅㅏ -> 갑 & 사
+      composingLetter += newChar;
+      var assembled = Hangul.a(Hangul.d(composingLetter));
+      composingLetter = assembled;
 
-    if (assembled.length == 2) {
-      // 값 + ㅏ -> 갑 & 사
-      completedLetters += assembled.slice(0, -1);
-      composingLetter = assembled.slice(-1);
+      if (assembled.length == 2) {
+        // 값 + ㅏ -> 갑 & 사
+        completedLetters += assembled.slice(0, -1);
+        composingLetter = assembled.slice(-1);
+      }
     }
-  }
+  } else {
+    console.log('Lets handle backspace');
 
+    if ((newChar == 'Backspace')) {
+      var newAllLetters = completedLetters + composingLetter;
+      var lastLetterGroup = Hangul.disassemble(composingLetter);
+      var text = completedLetters + composingLetter;
+      // checking last letter is korean
+
+      var a = ''; // After delete Char
+      if (text.length == 0) {
+        // test: "" + backspace
+      } else if (isNotKorean(composingLetter) == true || superDelete == true) {
+        // test: "alphanumeric" + backspace
+        completedLetters = text.slice(0, -1);
+        composingLetter = '';
+        superDelete = true;
+      } else if (lastLetterGroup.length == 1 && superDelete == false) {
+        // test: "딸ㄲ" + backspace
+        if (lastLetterGroup[0] == 'ㄲ') {
+          a = 'ㄱ';
+        } else if (lastLetterGroup[0] == 'ㄸ') {
+          a = 'ㄷ';
+        } else if (lastLetterGroup[0] == 'ㅃ') {
+          a = 'ㅂ';
+        } else if (lastLetterGroup[0] == 'ㅆ') {
+          a = 'ㅅ';
+        } else if (lastLetterGroup[0] == 'ㅉ') {
+          a = 'ㅈ';
+        } else {
+        }
+        composingLetter = a;
+        superDelete = true;
+      } else if (lastLetterGroup.length == 2 && superDelete == false) {
+        //test: "딸까" + backspace
+        composingLetter = Hangul.assemble(lastLetterGroup.slice(0, -1));
+      } else if (lastLetterGroup.length == 3 && superDelete == false) {
+        // test: "딸깎" + backspace
+        composingLetter = Hangul.assemble(lastLetterGroup.slice(0, -1));
+        lastLetterGroup[2] = newChar;
+        composingLetter = Hangul.assemble(lastLetterGroup);
+      } else if (lastLetterGroup.length == 4 && superDelete == false) {
+        //test: "딸값" + backspace
+
+        composingLetter = Hangul.assemble(lastLetterGroup.slice(0, -1));
+      }
+      console.log('backspaceed ending....');
+    }
+
+  }
   const myInstance: HandlerResults = {
     completedLetters: completedLetters,
     composingLetter: composingLetter,
+    superDelete: superDelete,
   };
   return myInstance;
 };
 
 export default useHangulInputHandler;
-
-// Custom hook for handling Hangul input
-/* const useHangulInputHandler = () => {
-  // State variables to track completed letters and composing letter
-  const [completedLetters, setCompletedLetters] = useState<string>('');
-  const [composingLetter, setComposingLetter] = useState<string>('');
-
-  // Function to handle Hangul input
-  const handleHangulInput = (newChar: string) => {
-    
-    console.log('handleHangulInput newChar', newChar);
-    // Check if the input character is not Korean
-    if (isNotKorean(newChar)) {
-      console.log('isNotKorean(newChar)', isNotKorean(newChar));
-
-      // Append composing letter and new character to completed letters
-      setCompletedLetters((prev) => prev + composingLetter + newChar);
-      // Reset composing letter
-      setComposingLetter('');
-
-    } else {
-      console.log('isNotKorean(newChar)', isNotKorean(newChar));
-      // If the input character is Korean
-      setComposingLetter((prev) => {
-        console.log('setComposingLetter((prev)', prev);
-        // Assemble Hangul characters
-        let assembled = Hangul.a(Hangul.d(prev + newChar)); // Convert to array of characters
-        console.log('assembled 2222', assembled);
-
-        // If assembled length is 1, return it
-        if (assembled.length === 1) {
-          console.log('assembled.length === 1' );
-          return assembled;
-        } else if (assembled.length === 2) { // If assembled length is 2
-          console.log('assembled.length === 2' );
-          // Append the first character to completed letters
-          setCompletedLetters((prevCompleted) => {
-            
-            const testtest = prevCompleted + assembled[0];
-            console.log('setCompletedLetters((prevCompleted)', testtest );
-            return testtest;
-          });
-          
-          // Return the second character as composing letter
-          return assembled[1];
-        } else {
-          console.log('assembled.length: ', assembled.length  );
-          return prev;   // Return previous composing letter if assembled length is neither 1 nor 2
-        }
-      });
-
-    }
-  };
-
-  // Function to check if a text is not Korean
-  const isNotKorean = (text: string) => {
-    const koreanCheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // Regular expression to match Korean characters
-    return !koreanCheck.test(text); // Return true if text does not match Korean characters
-  };
-
-  // Return state variables and function for handling Hangul input
-  return { completedLetters, composingLetter, handleHangulInput };
-};
-
-export default useHangulInputHandler; // Exporting the custom hook */
