@@ -1,3 +1,10 @@
+export interface KeyboardLayouts {
+    germanShifted: string[];
+    german: string[];
+    koreanShifted: string[];
+    korean: string[];
+}
+
 export const keyboardLayouts = {
     germanShifted: [
         '°', '+', '"', '*', 'ç', '%', '&', '/', '(', ')', '=', '?', '`', 
