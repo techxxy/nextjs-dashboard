@@ -7,8 +7,8 @@ interface KeysProps {
   onShiftClick: () => void;
 }
 
-const Keys: React.FC<KeysProps> = ({ keyboardLayout, onClick, onShiftClick }) => {
-
+const Keys: React.FC<KeysProps> = ({ keyboardLayout, onClick, onShiftClick}) => {
+  //const specialKeys = ['Tab', 'Lock', 'Shift', '3      ', 'Option', 'Command', 'Space', '7', 'Enter' ]
   const specialKeys = ['Tab', 'Lock', 'Shift', 'Control', 'Option', 'Command', 'Space', 'Backspace', 'Enter' ]
 
   return (
@@ -18,7 +18,7 @@ const Keys: React.FC<KeysProps> = ({ keyboardLayout, onClick, onShiftClick }) =>
       {keyboardLayout.slice(0, 13).map((key, index) => (
       <Key key={index} value={key} onClick={() => onClick(key)} className="w-11" />
         ))}
-      <Key value={specialKeys[7]} onClick={() => onClick('')} className="w-20"/>
+      <Key value={specialKeys[7]} onClick={() => onClick('Backspace')} className="w-20"/>
       </div>
 
       {/* Second row */}

@@ -13,22 +13,19 @@ const Typing: React.FC = () => {
  // const { handleHangulInput } = useHangulInputHandler(); // Custom hook for Hangul input handling
   const [completedLetters, setCompletedLetters] = useState<string>('');
   const [composingLetter, setComposingLetter] = useState<string>('');
-  const [superDelete, setSuperDelete] = useState<boolean>(false); // State for shift key status
 
 
   // Effect hook to handle key presses on the document
     useDocumentKeyPress((key) => { // Real keyboard handler
-    const results = useHangulInputHandler(completedLetters, composingLetter, superDelete, key);
+    const results = useHangulInputHandler(completedLetters, composingLetter, key);
     setCompletedLetters(results.completedLetters);
     setComposingLetter(results.composingLetter);
-    setSuperDelete(results.superDelete);
   });
 
   const handleVirtualKeyInput = (value: string) => { // Virtual keyboard handler
-    const results = useHangulInputHandler(completedLetters, composingLetter, superDelete, value);
+    const results = useHangulInputHandler(completedLetters, composingLetter, value);
     setCompletedLetters(results.completedLetters);
     setComposingLetter(results.composingLetter);
-    setSuperDelete(results.superDelete);
   };
 
   // Function to handle layout change
@@ -46,7 +43,9 @@ const Typing: React.FC = () => {
 
   return (
     <div>
-      <p className='w-2/3 h-11'> {completedLetters + composingLetter} </p>
+      <p className='w-2/3 h-11'>completedLetters: {completedLetters} </p>
+      <p className='w-2/3 h-11'>composingLetter: {composingLetter} </p>
+      <p className='w-2/3 h-11'>All {completedLetters + composingLetter} </p>
       <KeyboardSelector
         selectedLayout={selectedLayout}
         onSelectLayout={handleLayoutChange}
