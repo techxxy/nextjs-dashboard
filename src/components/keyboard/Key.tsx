@@ -3,7 +3,7 @@ import React from 'react';
 interface KeyProps {
   value: string;
   onClick: () => void;
-  className?: string; // Define className as an optional property
+  className?: string;
 }
 
 const Key: React.FC<KeyProps> = ({ value, onClick, className }) => { // Include className in the props
@@ -12,12 +12,12 @@ const Key: React.FC<KeyProps> = ({ value, onClick, className }) => { // Include 
   };
 
   return (
-    <button 
+    <div
       onClick={handleClick}
-      className={`${className} h-11`}
-    >
-      {value}
-    </button>
+      className={`w-[47px] ${className} h-11 leading-[40px] rounded-md`}
+      >
+        {value}
+    </div>
   );
 };
 

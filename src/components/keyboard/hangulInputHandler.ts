@@ -5,16 +5,15 @@ type HandlerResults = {
   composingLetter: string;
 };
 
-const isNotKorean = (text: string) => {
+function isNotKorean(text: string): boolean {
   const koreanCheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
   return !koreanCheck.test(text);
-};
+}
 
-const handleBackspace = (
+function handleBackspace(
   completedLetters: string,
   composingLetter: string,
-): HandlerResults => {
-  
+): HandlerResults {
   if (composingLetter.length === 0) {
     // Handle deletion of completedLetters
     if (completedLetters.length === 0) {
@@ -46,7 +45,7 @@ const handleBackspace = (
       } else if (lastLetterGroup[0] == 'ㅉ') {
         a = 'ㅈ';
       } else {
-        a = ''
+        a = '';
       }
       return {
         completedLetters,
@@ -67,13 +66,13 @@ const handleBackspace = (
       };
     }
   }
-};
+}
 
-const useHangulInputHandler = (
+export function hangulInputHandler(
   completedLetters: string,
   composingLetter: string,
-  newChar: string ='',
-): HandlerResults => {
+  newChar: string = '',
+): HandlerResults {
   if (newChar.length === 1) {
     if (isNotKorean(newChar)) {
       completedLetters += composingLetter + newChar;
@@ -96,6 +95,5 @@ const useHangulInputHandler = (
     completedLetters,
     composingLetter,
   };
-};
+}
 
-export default useHangulInputHandler;

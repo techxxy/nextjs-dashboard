@@ -40,3 +40,13 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
+
+model Keyboard {
+  id              Int       @id @default(autoincrement())
+  english         String    @db.Char
+  korean          String    @db.Char
+  koreanShifted   String    @db.Char
+  germanShifted   String    @db.Char
+  englishShifted  String    @db.Char
+  htmlStyle       String    @db.VarChar
+}

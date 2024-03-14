@@ -21,18 +21,15 @@ const Keys: React.FC<KeysProps> = ({
     <div>
       <div className={styles.keyboard}>
         <div className="flex">
-          <Key
-            value={specialKeys[9]}
-            onClick={() => onClick('')}
+          <div
             className={`${styles.key} w-20 rounded-tl-[22px] rounded-tr-md rounded-br-md rounded-bl-md`}
-          />
-          {functionKeys.slice(0, 12).map((value, index) => (
-            <Key
+          >esc
+          </div>
+          {functionKeys.slice(0, 12).map((key, index) => (
+            <div
               key={index}
-              value={value}
-              onClick={() => onClick('')}
               className={`${styles.key} w-[47px] rounded-md`}
-            />
+            >{key}</div>
           ))}
            <Key
             value={functionKeys[12]}
@@ -47,96 +44,55 @@ const Keys: React.FC<KeysProps> = ({
               key={index}
               value={key}
               onClick={() => onClick(key)}
-              className={`${styles.key} w-[47px] rounded-md`}
+              className={`${styles.key}`}
             />
           ))}
-          <Key
-            value={specialKeys[7]}
+          <div
             onClick={() => onClick('Backspace')}
             className={`${styles.key} w-20 rounded-md`}
-          />
+          >backspace</div>
         </div>
 
         {/* Second row */}
         <div className="flex">
-          <Key
-            value={specialKeys[0]}
+          <div
             onClick={() => onClick('')}
-            className={`${styles.key} w-20 rounded-md`}
-          />
+            className={`${styles.key} w-24 rounded-md`}
+          >tab</div>
           {keyboardLayout.slice(13, 26).map((key, index) => (
-            <Key key={index} value={key} onClick={() => onClick(key)} className={`${styles.key} w-[47px] rounded-md`}/>
+            <Key key={index} value={key} onClick={() => onClick(key)} className={`${styles.key}`}/>
           ))}
         </div>
 
         <div className="flex">
-          <Key
-            value={specialKeys[1]}
-            onClick={() => onClick('')}
+          <div
             className={`${styles.key} w-24 rounded-md`}
-          />
+          >capslock</div>
           {keyboardLayout.slice(26, 37).map((key, index) => (
-            <Key key={index} value={key} onClick={() => onClick(key)} className={`${styles.key} w-[47px] rounded-md`} />
+            <Key key={index} value={key} onClick={() => onClick(key)} className={`${styles.key}`} />
           ))}
-          <Key
-            value={specialKeys[8]}
+          <div
             onClick={() => onClick('')}
             className={`${styles.key} w-[86px] rounded-md`}
-          />
+          >Enter</div>
         </div>
         <div className="flex">
           <Key value={specialKeys[2]} onClick={onShiftClick} className={`${styles.key} w-[86px] rounded-md`} />
           {keyboardLayout.slice(37, 48).map((key, index) => (
             <Key key={index} value={key} onClick={() => onClick(key)} className={`${styles.key} w-[47px] rounded-md`}/>
           ))}
-          <Key value={specialKeys[2]} onClick={onShiftClick} className={`${styles.key} w-24 rounded-md`}/>
+          <div onClick={onShiftClick} className={`${styles.key} w-24 rounded-md`}>shift</div>
         </div>
         <div className="flex">
-          <Key
-            value={specialKeys[3]}
-            onClick={() => onClick('')}
-            className={`${styles.key}  w-[60px] rounded-bl-[22px] rounded-tr-md rounded-br-md rounded-tl-md`}
-          />
-          <Key
-            value={specialKeys[3]}
-            onClick={() => onClick('')}
-            className={`${styles.key}  w-[47px] rounded-md`}
-          />
-          <Key
-            value={specialKeys[4]}
-            onClick={() => onClick('')}
-            className={`${styles.key} w-[47px] rounded-md`}
-          />
-          <Key
-            value={specialKeys[5]}
-            onClick={() => onClick('')}
-            className={`${styles.key} w-16 rounded-md`}
-          />
-          <Key
-            value={specialKeys[6]}
-            onClick={() => onClick(' ')}
-            className={`${styles.key} w-[300px] rounded-md`}
-          />
-          <Key
-            value={specialKeys[5]}
-            onClick={() => onClick('')}
-            className={`${styles.key} w-16 rounded-md`}
-          />
-          <Key
-            value={specialKeys[4]}
-            onClick={() => onClick('')}
-            className={`${styles.key} w-[47px] rounded-md`}
-          />
-          <Key
-            value={specialKeys[4]}
-            onClick={() => onClick('')}
-            className={`${styles.key} w-[47px] rounded-md`}
-          />
-          <Key
-            value={specialKeys[3]}
-            onClick={() => onClick('')}
-            className={`${styles.key} w-[60px] rounded-br-[22px] rounded-tr-md rounded-bl-md rounded-tl-md`}
-          />
+          <div className={`${styles.key}  w-[60px] rounded-bl-[22px] rounded-tr-md rounded-br-md rounded-tl-md`}>control</div>
+          <div className={`${styles.key}  w-[47px] rounded-md`}></div>
+          <div className={`${styles.key} w-[47px] rounded-md`}></div>
+          <div className={`${styles.key} w-16 rounded-md h-11`}></div>
+          <div onClick={() => onClick(' ')} className={`${styles.key} w-[300px] rounded-md`}></div>
+          <div className={`${styles.key} w-16 rounded-md`} ></div>
+          <div className={`${styles.key} w-[47px] rounded-md`} ></div>
+          <div className={`${styles.key} w-[47px] rounded-md`} ></div>
+          <div className={`${styles.key} w-[60px] rounded-br-[22px] rounded-tr-md rounded-bl-md rounded-tl-md`} ></div>
         </div>
       </div>
     </div>
