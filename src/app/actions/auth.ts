@@ -2,7 +2,7 @@
 
 import { signIn, signOut } from '@/auth';
 import { db } from '@/db';
-import type { user } from '@/db';
+import type { User } from '@prisma/client';
 import { AuthError } from 'next-auth';
 import { z } from 'zod';
 import bcryptjs from 'bcryptjs';
@@ -87,7 +87,7 @@ export async function signUp(formState: SignUpFormState, formData: FormData):
 
   const verificationToken = generateEmailVerificationToken();
 
-  let user: user;
+  let user: User;
   try {
     // create user data
     user = await db.user.create({

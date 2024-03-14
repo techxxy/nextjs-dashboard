@@ -10,6 +10,7 @@ const layoutOptions = [
   { value: 'koreanShifted', label: 'Korean Shifted' },
   { value: 'german', label: 'German' },
   { value: 'germanShifted', label: 'German Shifted' },
+  { value: 'original', label: 'Original' },
   // Add more layout options as needed
 ];
 

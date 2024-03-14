@@ -14,7 +14,6 @@ model Customer {
   email     String     @db.VarChar(255)
   image_url String     @db.VarChar(255)
   invoice  Invoice[]
-  @@map("customers")
 } 
 
 model Invoice {
@@ -24,13 +23,11 @@ model Invoice {
   status      String    @db.VarChar(255)
   date        DateTime  @db.Date
   customer    Customer @relation(fields: [customer_id], references: [id])
-  @@map("invoices")
 }
 
 model Revenue {
   month   String @unique @db.VarChar(4)
   revenue Int
-  @@map("revenue")
 }
 
 model User {
@@ -42,5 +39,4 @@ model User {
   password        String    @db.VarChar(255)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  @@map("users")
 }

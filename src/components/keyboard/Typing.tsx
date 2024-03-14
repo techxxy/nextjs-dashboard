@@ -10,10 +10,8 @@ const Typing: React.FC = () => {
   // State variables
   const [selectedLayout, setSelectedLayout] = useState<string>('german'); // State for selected keyboard layout
   const [isShiftPressed, setIsShiftPressed] = useState<boolean>(false); // State for shift key status
- // const { handleHangulInput } = useHangulInputHandler(); // Custom hook for Hangul input handling
   const [completedLetters, setCompletedLetters] = useState<string>('');
   const [composingLetter, setComposingLetter] = useState<string>('');
-
 
   // Effect hook to handle key presses on the document
     useDocumentKeyPress((key) => { // Real keyboard handler
@@ -41,6 +39,29 @@ const Typing: React.FC = () => {
     ); // Change layout to shifted or unshifted Korean based on previous layout
   };
 
+  const renderKeys = () => {
+    const layout = keyboardLayouts[selectedLayout];
+    if (selectedLayout === 'original') {
+      return layout.map((key, index) => (
+        <div
+          key={index}
+          dangerouslySetInnerHTML={{ __html: key }} // Render HTML elements
+          onClick={() => handleVirtualKeyInput(key)}
+          className='h-11'
+        />
+      ));
+    } else {
+      return layout.map((key, index) => (
+        <Keys
+          key={index}
+          keyboardLayout={key}
+          onClick={handleVirtualKeyInput}
+          onShiftClick={handleShiftClick}
+        />
+      ));
+    }
+  };
+
   return (
     <div>
       <p className='w-2/3 h-11'>completedLetters: {completedLetters} </p>
@@ -50,13 +71,9 @@ const Typing: React.FC = () => {
         selectedLayout={selectedLayout}
         onSelectLayout={handleLayoutChange}
       />
-      <Keys
-        keyboardLayout={keyboardLayouts[selectedLayout]}
-        onClick={handleVirtualKeyInput}
-        onShiftClick={handleShiftClick}
-      /> 
+      {renderKeys()} {/* Render keys based on layout */}
     </div>
   );
 };
 
-export default Typing; // Export Typing component
+export default Typing;

@@ -72,7 +72,7 @@ const handleBackspace = (
 const useHangulInputHandler = (
   completedLetters: string,
   composingLetter: string,
-  newChar: string,
+  newChar: string ='',
 ): HandlerResults => {
   if (newChar.length === 1) {
     if (isNotKorean(newChar)) {
