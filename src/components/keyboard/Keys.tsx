@@ -2,6 +2,7 @@ import styles from './styles.module.css';
 import React from 'react';
 import Key from './Key';
 import FnKeys from './FnKeys';
+//import NoKeys from './NoKeys';
 import { MdOutlineBackspace } from 'react-icons/md';
 
 interface KeysProps {
@@ -30,34 +31,89 @@ const Keys: React.FC<KeysProps> = ({
     'esc',
   ];
 
-  const keys = [
-    { code: 'IntlBackslash', german: '§' , germanShifted: '°' , korean: '~',  koreanShifted: '₩', },
-    { code: 'Digit1'       , german: '1' , germanShifted: '+' , korean: '1',  koreanShifted: '!', },
-    { code: 'Digit2'       , german: '2' , germanShifted: '"' , korean: '2',  koreanShifted: '@', },
-    { code: 'Digit3'       , german: '3' , germanShifted: '*' , korean: '3',  koreanShifted: '#', },
-    { code: 'Digit4'       , german: '4' , germanShifted: 'ç' , korean: '4',  koreanShifted: '$', },
-    { code: 'Digit5'       , german: '5' , germanShifted: '%' , korean: '5',  koreanShifted: '%', },
-    { code: 'Digit6'       , german: '6' , germanShifted: '&' , korean: '6',  koreanShifted: '^', },
-    { code: 'Digit7'       , german: '7' , germanShifted: '/' , korean: '7',  koreanShifted: '&', },
-    { code: 'Digit8'       , german: '8' , germanShifted: '(' , korean: '8',  koreanShifted: '*', },
-    { code: 'Digit9'       , german: '9' , germanShifted: ')' , korean: '9',  koreanShifted: '(', },
-    { code: 'Digit0'       , german: '0' , germanShifted: '=' , korean: '0',  koreanShifted: ')', },
-    { code: 'Minus'        , german: '\'', germanShifted: '?',  korean: '-',  koreanShifted: '_', },
-    { code: 'Equal'        , german: '^' , germanShifted: '`' , korean: '=',  koreanShifted: '+', },
-    { code: 'KeyQ'         , german: 'q' , germanShifted: 'Q' , korean: 'ㅂ', koreanShifted: 'ㅃ', },
-    { code: 'KeyW'         , german: 'w' , germanShifted: 'W' , korean: 'ㅈ', koreanShifted: 'ㅉ', },
-    { code: 'KeyE'         , german: 'e' , germanShifted: 'E' , korean: 'ㄷ', koreanShifted: 'ㄸ', },
-    { code: 'KeyR'         , german: 'r' , germanShifted: 'R' , korean: 'ㄱ', koreanShifted: 'ㄲ', },
-    { code: 'KeyT'         , german: 't' , germanShifted: 'T' , korean: 'ㅅ', koreanShifted: 'ㅆ', },
-    { code: 'KeyY'         , german: 'z' , germanShifted: 'Z' , korean: 'ㅛ', koreanShifted: 'ㅛ', },
-    { code: 'KeyU'         , german: 'u' , germanShifted: 'U' , korean: 'ㅕ', koreanShifted: 'ㅕ', },
-    { code: 'KeyI'         , german: 'i' , germanShifted: 'I' , korean: 'ㅑ', koreanShifted: 'ㅑ', },
-    { code: 'KeyO'         , german: 'o' , germanShifted: 'O' , korean: 'ㅐ', koreanShifted: 'ㅒ', },
-    { code: 'KeyP'         , german: 'p' , germanShifted: 'P' , korean: 'ㅔ', koreanShifted: 'ㅖ', },
-    { code: 'BracketLeft'  , german: 'ü' , germanShifted: 'è' , korean: '[',  koreanShifted: '{', },
-    { code: 'BracketRight' , german: '¨' , germanShifted: '!' , korean: ']',  koreanShifted: '}', },
-    { code: 'Backslash'    , german: '$' , germanShifted: '£' , korean: '\\', koreanShifted: '|', },
+  const numberKeys = [
+    { korean: '~', koreanShifted: '₩' , german: '§',  germanShifted:'°' },
+    { korean: '1', koreanShifted: '!' , german: '1',  germanShifted:'+' },
+    { korean: '2', koreanShifted: '@' , german: '2',  germanShifted:'"' },
+    { korean: '3', koreanShifted: '#' , german: '3',  germanShifted:'*' },
+    { korean: '4', koreanShifted: '$' , german: '4',  germanShifted:'ç' },
+    { korean: '5', koreanShifted: '%' , german: '5',  germanShifted:'%' },
+    { korean: '6', koreanShifted: '^' , german: '6',  germanShifted:'&' },
+    { korean: '7', koreanShifted: '&' , german: '7',  germanShifted:'/' },
+    { korean: '8', koreanShifted: '*' , german: '8',  germanShifted:'(' },
+    { korean: '9', koreanShifted: '(' , german: '9',  germanShifted:')' },
+    { korean: '0', koreanShifted: ')' , german: '0',  germanShifted:'=' },
+    { korean: '-', koreanShifted: '_' , german: '\'', germanShifted:'?' },
+    { korean: '=', koreanShifted: '+' , german: '`',  germanShifted:'`' },
   ];
+
+  const renderNoKeys = () => {
+    if (language === 'korean') {
+      return numberKeys.map(({ korean, koreanShifted }, index) => (
+        <div
+          key={index}
+          onClick={() => onClick(korean)}
+          className={`${styles.key} h-11 w-[47px] items-end rounded-md`}
+        >
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="mt-1.5 text-[10px] leading-none">
+              {koreanShifted}
+            </div>
+            <div className="text-sm leading-none">{korean}</div>
+          </div>
+        </div>
+      ));
+    } else if (language === 'koreanShifted') {
+      return numberKeys.map(({korean, koreanShifted}, index) => (
+        <div
+          key={index}
+          onClick={() => onClick(koreanShifted)}
+          className={`${styles.key} h-11 w-[47px] items-end rounded-md`}
+        >
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="mt-1.5 text-[10px] leading-none">
+              {koreanShifted}
+            </div>
+            <div className="text-sm leading-none">{korean}</div>
+          </div>
+        </div>
+      ));
+    }else if (language === 'german') {
+      return numberKeys.map(({ german, germanShifted}, index) => (
+        <div
+          key={index}
+          onClick={() => onClick(german)}
+          className={`${styles.key} h-11 w-[47px] items-end rounded-md`}
+        >
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="mt-1.5 text-[10px] leading-none">
+              {germanShifted}
+            </div>
+            <div className="text-sm leading-none">{german}</div>
+          </div>
+        </div>
+      ));
+    } else if (language === 'germanShifted') {
+      return numberKeys.map(({ germanShifted, koreanShifted, korean }, index) => (
+        <div
+          key={index}
+          onClick={() => onClick(germanShifted)}
+          className={`${styles.key} h-11 w-[47px] items-end rounded-md`}
+        >
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="mt-1.5 text-[10px] leading-none">
+              {germanShifted}
+            </div>
+            <div className="text-sm leading-none">{korean}</div>
+          </div>
+        </div>
+      ));
+    } else {
+      return null;
+    }
+  };
+
+  
 
   return (
     <div>
@@ -67,6 +123,19 @@ const Keys: React.FC<KeysProps> = ({
         <div className="flex">
           <FnKeys />
         </div>
+
+        {/* Number Keys Testing */}
+        <div className="flex">
+        {renderNoKeys()}
+
+          <div
+            onClick={() => onClick('Backspace')}
+            className={`${styles.key} flex w-20 flex-row-reverse items-end rounded-md pb-1 pr-1.5`}
+          >
+            <MdOutlineBackspace size="15" />
+          </div>
+        </div>
+
         {/* Number Keys */}
         <div className="flex">
           {keyboardLayout.slice(0, 1).map((key, index) => (
