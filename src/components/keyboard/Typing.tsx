@@ -52,6 +52,7 @@ const Typing: React.FC = () => {
         onSelectLayout={handleLayoutChange}
       />
       <Keys
+        language ={selectedLayout}
         keyboardLayout={keyboardLayouts[selectedLayout]}
         onClick={handleVirtualKeyInput}
         onShiftClick={handleShiftClick}

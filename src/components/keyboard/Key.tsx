@@ -7,9 +7,9 @@ interface KeyProps {
 }
 
 const Key: React.FC<KeyProps> = ({ value, onClick, className }) => { // Include className in the props
-  const handleClick = () => {
-    onClick();
-  };
+   const handleClick = () => {
+     onClick();
+   };
 
   return (
     <div

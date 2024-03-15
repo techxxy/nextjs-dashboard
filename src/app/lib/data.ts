@@ -11,39 +11,6 @@ export async function fetchRevenue() {
   }
 }
 
-export async function fetchLatestInvoices() {
-  try {
-    const latestInvoices = await db.invoice.findMany({
-      select: {
-        id: true,
-        amount: true,
-        date: true,
-        customer: {
-          select: {
-            name: true,
-            email: true,
-            image_url: true,
-          },
-        },
-      },
-      orderBy: {
-        date: 'desc',
-      },
-      take: 5,
-    });
-
-    // Format currency for each invoice
-    latestInvoices.forEach(item => {
-      item.amount = formatCurrency(item.amount);
-    });
-
-    return latestInvoices;
-  } catch (error) {
-    console.error('Error fetching the latest invoices:', error);
-    throw error;
-  }
-}
-
 export async function fetchCardData() {
   try {
     const numberOfInvoices = await db.invoice.count();
@@ -183,47 +150,6 @@ export async function fetchCustomers() {
     return customers;
   } catch (error) {
     console.error('Error fetching all customers:', error);
-    throw error;
-  }
-}
-
-export async function fetchFilteredCustomers(query: string) {
-  try {
-    const customers = await db.customer.findMany({
-      where: {
-        OR: [
-          { name: { contains: query } },
-          { email: { contains: query } },
-        ],
-      },
-      orderBy: {
-        name: 'asc',
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image_url: true,
-        invoice: {
-          select: {
-            id: true,
-            amount: true,
-            status: true,
-          },
-        },
-      },
-    });
-
-    customers.forEach(customer => {
-      customer.invoice.forEach(item => {
-        item.total_pending = formatCurrency(item.total_pending);
-        item.total_paid = formatCurrency(item.total_paid);
-      });
-    });
-
-    return customers;
-  } catch (error) {
-    console.error('Error fetching customer table:', error);
     throw error;
   }
 }

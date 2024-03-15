@@ -6,19 +6,6 @@ interface KeyPressedCallback {
   (key: string): void;
 }
 
-// Utility function to print information about the key event
-const printLog = (
-  event: KeyboardEvent,
-  convertedValue: string | undefined,
-  key: string | undefined,
-) => {
-  console.log('event:', event);
-  console.log('event.code:', event.code);
-  console.log('event.key:', event.key);
-  console.log('key pressed:', key);
-  console.log('convertedValue pressed:', convertedValue);
-};
-
 // Check if a given text contains Korean characters
 const isKorean = (text: string) => {
   const koreanCheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
@@ -35,6 +22,7 @@ const documentKeyPressed = (
   let index: number | undefined;
 
   if (event.key.length === 1) { // If single character like symbols #!
+    console.log('Keyboard Key event:', event)
     if (event.code.startsWith('Digit')) { // if number keys
       convertedValue = event.key;
     } else if (event.code.startsWith('Key')) {
