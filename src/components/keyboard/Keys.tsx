@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
-import Key from './Key';
 import FnKeys, {OptionKeysL, OptionKeysR} from './FnKeys';
-//import NoKeys from './NoKeys';
 import {
   MdOutlineBackspace,
   MdOutlineKeyboardTab,
-  MdKeyboardControlKey,
-  MdOutlineKeyboardOptionKey,
-  MdKeyboardCommandKey,
 } from 'react-icons/md';
 import { BsArrowReturnLeft, BsShift, BsGlobe } from 'react-icons/bs';
 
@@ -30,19 +25,6 @@ const Keys: React.FC<KeysProps> = ({
   const toggleCapslock = () => {
     setShowCapslock(!showCapslock);
   };
-
-  const specialKeys = [
-    'Tab',
-    'Lock',
-    'Shift',
-    'Control',
-    'Option',
-    'Command',
-    'Space',
-    'Backspace',
-    'Enter',
-    'esc',
-  ];
 
   const keyboardKeys = [
     { korean: '₩', koreanShifted: '~', german: '§', germanShifted: '°' },
