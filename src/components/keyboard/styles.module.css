@@ -5,6 +5,7 @@
   margin: 10px;
   padding: 6px;
   max-width: 833px;
+  min-width: 450px;
   width: 100%;
   height: fit-content;
   background: #bec4c6;
@@ -56,7 +57,7 @@
 .key {
   border: solid 1px rgb(153, 153, 153);
   background: #eaeaea;
-  float: left;
+  height: 46px;
   margin: 5px 5px 4px 4px;
   text-align: center;
   color: #666565;
@@ -104,4 +105,17 @@
     0 1px 3px #333,
     0 -1px 1px #363636,
     0 1px 1px #494949;
+}
+
+.arrow {
+  height: 23px;
+  margin: 1px 5px 0px 4px;
+}
+
+.arrow:active,
+.arrow {
+  margin: 0px 5px 1px 4px;
+}
+
+.capslock {color:rgb(4, 255, 0); text-shadow: 0 0 1px #000000, 0 0 2px #73ff00;
 }
