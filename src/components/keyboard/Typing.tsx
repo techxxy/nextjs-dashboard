@@ -5,11 +5,11 @@ import { keyboardLayouts } from './keyboardLayouts'; // Import predefined keyboa
 import useDocumentKeyPress from './useDocumentKeyPress';
 import { hangulInputHandler } from './hangulInputHandler'; // Import custom hook for handling Hangul input
 import { Boundary } from '@/components/ui/boundary';
+import WordPairComponent from './WordPair';
 
 const Typing: React.FC = () => {
   // State variables
-  const [selectedLayout, setSelectedLayout] = useState<string>('german'); // State for selected keyboard layout
-  const [isShiftPressed, setIsShiftPressed] = useState<boolean>(false); // State for shift key status
+  const [selectedLayout, setSelectedLayout] = useState<string>('korean'); // State for selected keyboard layout
   const [completedLetters, setCompletedLetters] = useState<string>('');
   const [composingLetter, setComposingLetter] = useState<string>('');
 
@@ -35,41 +35,66 @@ const Typing: React.FC = () => {
 
   // Function to handle shift key click
   const handleShiftClick = () => {
-    setIsShiftPressed((prevState) => !prevState); // Toggle shift key status
     setSelectedLayout((prevLayout) =>
-      prevLayout === 'korean' ? 'koreanShifted' : 'korean',
+      prevLayout === 'korean'
+        ? 'koreanShifted'
+        : prevLayout === 'german'
+        ? 'germanShifted'
+        : prevLayout === 'germanShifted'
+        ? 'german'
+        : 'korean',
     ); // Change layout to shifted or unshifted Korean based on previous layout
+  };
+
+  // Function to handle shift key click
+  const handleCapslockClick = () => {
+    setSelectedLayout((prevLayout) =>
+      prevLayout === 'korean'
+        ? 'german'
+        : prevLayout === 'koreanShifted'
+        ? 'germanShifted'
+        : prevLayout === 'germanShifted'
+        ? 'koreanShifted'
+        : 'korean',
+    ); // Change layout to shifted or unshifted Korean based on previous layout
+  };
+
+  const emptyComposingCompletedLetters = () => {
+    setCompletedLetters('');
+    setComposingLetter('');
   };
 
   return (
     <div>
-      <p className="h-11 w-2/3">completedLetters: {completedLetters} </p>
-      <p className="h-11 w-2/3">composingLetter: {composingLetter} </p>
-      <p className="h-11 w-2/3">All {completedLetters + composingLetter} </p>
       <Boundary
-        labels={['Counter Context [Client Component]']}
-        color="blue"
-        size="small"
-        animateRerendering={true}
-      >
-        <KeyboardSelector
-          selectedLayout={selectedLayout}
-          onSelectLayout={handleLayoutChange}
-        />
-       <Boundary
-        labels={['Keyboard']}
+        labels={['Korean']}
         color="pink"
         size="small"
         animateRerendering={true}
       >
+        <WordPairComponent 
+        textDisplay={completedLetters + composingLetter}
+        //resetTextInput={emptyComposingCompletedLetters}
+        />
+      </Boundary>
 
+      <KeyboardSelector
+        selectedLayout={selectedLayout}
+        onSelectLayout={handleLayoutChange}
+      />
+      <Boundary
+        labels={['Tastatur']}
+        color="default"
+        size="small"
+        animateRerendering={false}
+      >
         <Keys
           language={selectedLayout}
           keyboardLayout={keyboardLayouts[selectedLayout]}
           onClick={handleVirtualKeyInput}
           onShiftClick={handleShiftClick}
+          onCapslockClick={handleCapslockClick}
         />
-              </Boundary>
       </Boundary>
     </div>
   );

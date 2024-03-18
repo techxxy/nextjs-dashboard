@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
-import FnKeys, {OptionKeysL, OptionKeysR} from './FnKeys';
-import {
-  MdOutlineBackspace,
-  MdOutlineKeyboardTab,
-} from 'react-icons/md';
+import FnKeys, { OptionKeysL, OptionKeysR } from './FnKeys';
+import { MdOutlineBackspace, MdOutlineKeyboardTab } from 'react-icons/md';
 import { BsArrowReturnLeft, BsShift, BsGlobe } from 'react-icons/bs';
 
 interface KeysProps {
   keyboardLayout: string[];
+  language: string;
   onClick: (key: string) => void;
   onShiftClick: () => void;
-  language: string;
+  onCapslockClick: () => void;
 }
 
 const Keys: React.FC<KeysProps> = ({
@@ -19,6 +17,7 @@ const Keys: React.FC<KeysProps> = ({
   language,
   onClick,
   onShiftClick,
+  onCapslockClick,
 }) => {
   const [showCapslock, setShowCapslock] = useState(true);
 
@@ -26,7 +25,7 @@ const Keys: React.FC<KeysProps> = ({
     setShowCapslock(!showCapslock);
   };
 
-  const keyboardKeys = [
+  const keyboardKeys: LanguageKeys[] = [
     { korean: '₩', koreanShifted: '~', german: '§', germanShifted: '°' },
     { korean: '1', koreanShifted: '!', german: '1', germanShifted: '+' },
     { korean: '2', koreanShifted: '@', german: '2', germanShifted: '"' },
@@ -82,163 +81,91 @@ const Keys: React.FC<KeysProps> = ({
     { korean: '-', koreanShifted: '_', german: '/', germanShifted: '?' },
   ];
 
-  const renderNoKeys = (start: number, end: number) => {
-    let onClickFunction: (key: string) => void;
+  interface LanguageKeys {
+    korean: string;
+    koreanShifted: string;
+    german: string;
+    germanShifted: string;
+  }
 
-    switch (language) {
-      case 'korean':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'koreanShifted':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'german':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'germanShifted':
-        onClickFunction = (key) => onClick(key);
-        break;
-      default:
-        return null;
-    }
-    return keyboardKeys
-      .slice(start, end)
-      .map(({ korean, koreanShifted, german, germanShifted }, index) => (
-        <div
-          key={index}
-          onClick={() =>
-            onClickFunction(
-              language === 'korean'
-                ? korean
-                : language === 'german'
-                ? german
-                : language === 'koreanShifted'
-                ? koreanShifted
-                : germanShifted,
-            )
-          }
-          className={`${styles.key} w-[47px] items-end rounded-md`}
-        >
-          <div className="flex flex-col items-center gap-1.5">
-            <div className="mt-1.5 text-[10px] leading-none">
-              {language === 'korean' || language === 'koreanShifted'
-                ? koreanShifted
-                : germanShifted}
-            </div>
-            <div className="text-sm leading-none">
-              {language === 'korean' || language === 'koreanShifted'
-                ? korean
-                : german}
-            </div>
+  function sendSelectedKey(clickedKey: LanguageKeys) {
+    const correctKey =
+      language === 'korean'
+        ? clickedKey.korean
+        : language === 'german'
+        ? clickedKey.german
+        : language === 'koreanShifted'
+        ? clickedKey.koreanShifted
+        : clickedKey.germanShifted;
+    onClick(correctKey);
+  }
+
+  const NumKeys = ({ start, end }: { start: number; end: number }) => {
+    return keyboardKeys.slice(start, end).map((keys, index) => (
+      <div
+        key={index}
+        onClick={() => sendSelectedKey(keys)}
+        className={`${styles.key} w-[47px] items-end rounded-md`}
+      >
+        <div className="flex flex-col items-center gap-1.5">
+          <div className="mt-1.5 text-[10px] leading-none">
+            {language === 'korean' || language === 'koreanShifted'
+              ? keys.koreanShifted
+              : keys.germanShifted}
+          </div>
+          <div className="text-sm leading-none">
+            {language === 'korean' || language === 'koreanShifted'
+              ? keys.korean
+              : keys.german}
           </div>
         </div>
-      ));
+      </div>
+    ));
   };
 
-  const renderSymKeys = (start: number, end: number) => {
-    let onClickFunction: (key: string) => void;
-
-    switch (language) {
-      case 'korean':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'koreanShifted':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'german':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'germanShifted':
-        onClickFunction = (key) => onClick(key);
-        break;
-      default:
-        return null;
-    }
-    return keyboardKeys
-      .slice(start, end)
-      .map(({ korean, koreanShifted, german, germanShifted }, index) => (
-        <div
-          key={index}
-          onClick={() =>
-            onClickFunction(
-              language === 'korean'
-                ? korean
-                : language === 'german'
-                ? german
-                : language === 'koreanShifted'
-                ? koreanShifted
-                : germanShifted,
-            )
-          }
-          className={`${styles.key} w-[47px] items-end rounded-md`}
-        >
-          <div className="grid grid-cols-1 gap-1 text-[13px] leading-none">
-            <div className="mt-[5px]">
-              {language === 'korean' || language === 'koreanShifted'
-                ? koreanShifted
-                : germanShifted}
-            </div>
-            <div className="mb-1">
-              {language === 'korean' || language === 'koreanShifted'
-                ? korean
-                : german}
-            </div>
+  const SymbolKeys = ({ start, end }: { start: number; end: number }) => {
+    return keyboardKeys.slice(start, end).map((keys: LanguageKeys, index) => (
+      <div
+        key={index}
+        onClick={() => sendSelectedKey(keys)}
+        className={`${styles.key} w-[47px] items-end rounded-md`}
+      >
+        <div className="grid grid-cols-1 gap-1 text-[13px] leading-none">
+          <div className="mt-[5px]">
+            {language === 'korean' || language === 'koreanShifted'
+              ? keys.koreanShifted
+              : keys.germanShifted}
+          </div>
+          <div className="mb-1">
+            {language === 'korean' || language === 'koreanShifted'
+              ? keys.korean
+              : keys.german}
           </div>
         </div>
-      ));
+      </div>
+    ));
   };
 
-  const renderCharKeys = (start: number, end: number) => {
-    let onClickFunction: (key: string) => void;
-
-    switch (language) {
-      case 'korean':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'koreanShifted':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'german':
-        onClickFunction = (key) => onClick(key);
-        break;
-      case 'germanShifted':
-        onClickFunction = (key) => onClick(key);
-        break;
-      default:
-        return null;
-    }
-    return keyboardKeys
-      .slice(start, end)
-      .map(({ korean, koreanShifted, german, germanShifted }, index) => (
-        <div
-          key={index}
-          onClick={() =>
-            onClickFunction(
-              language === 'korean'
-                ? korean
-                : language === 'german'
-                ? german
-                : language === 'koreanShifted'
-                ? koreanShifted
-                : germanShifted,
-            )
-          }
-          className={`${styles.key} w-[47px] items-end rounded-md`}
-        >
-          <div className="grid grid-cols-2 gap-1 pt-1.5 text-sm leading-none ">
-            <div className="ml-[3px]">
-              {korean === koreanShifted ? '' : koreanShifted}
-            </div>
-            <div className="mr-[3px]">{germanShifted}</div>
-            <div className="ml-[3px]">{korean}</div>
+  const CharKeys = ({ start, end }: { start: number; end: number }) => {
+    return keyboardKeys.slice(start, end).map((keys: LanguageKeys, index) => (
+      <div
+        key={index}
+        onClick={() => sendSelectedKey(keys)}
+        className={`${styles.key} w-[47px] items-end rounded-md`}
+      >
+        <div className="grid grid-cols-2 gap-1 pt-1.5 text-sm leading-none ">
+          <div className="ml-[3px]">
+            {keys.korean === keys.koreanShifted ? '' : keys.koreanShifted}
           </div>
+          <div className="mr-[3px]">{keys.germanShifted}</div>
+          <div className="ml-[3px]">{keys.korean}</div>
         </div>
-      ));
+      </div>
+    ));
   };
 
   return (
     <div>
-      Selected Language: {language}
       <div className={styles.keyboard}>
         {/* Function Keys */}
         <div className="flex">
@@ -246,9 +173,9 @@ const Keys: React.FC<KeysProps> = ({
         </div>
         {/* Number Keys */}
         <div className="flex">
-          {renderSymKeys(0, 1)}
-          {renderNoKeys(1, 11)}
-          {renderSymKeys(11, 13)}
+          <SymbolKeys start={0} end={1} />
+          <NumKeys start={1} end={11} />
+          <SymbolKeys start={11} end={13} />
           <div
             onClick={() => onClick('Backspace')}
             className={`${styles.key} flex w-20 flex-row-reverse items-end rounded-md pb-1 pr-2`}
@@ -264,27 +191,31 @@ const Keys: React.FC<KeysProps> = ({
           >
             <MdOutlineKeyboardTab size="16" />
           </div>
-          {renderCharKeys(13, 23)}
-          {renderSymKeys(23, 26)}
+          <CharKeys start={13} end={23} />
+          <SymbolKeys start={23} end={26} />
         </div>
         {/* Capslock ASD row */}
         <div className="flex">
           <div
             className={`${styles.key} flex w-24 flex-col items-start rounded-md pl-2`}
-            onClick={toggleCapslock}
+            onClick={onCapslockClick}
           >
             <div
               id="capslock"
               className={`${
-                showCapslock ? styles.capslock : ''
+                language === 'korean'
+                  ? styles.capslock
+                  : language === 'koreanShifted'
+                  ? styles.capslock
+                  : ''
               } mb-1 text-[11px]`}
             >
               &#x2022;
             </div>
             <div className="items-end pb-1 text-xs">한/A</div>
           </div>
-          {renderCharKeys(26, 35)}
-          {renderSymKeys(35, 37)}
+          <CharKeys start={26} end={35} />
+          <SymbolKeys start={35} end={37} />
           <div
             onClick={() => onClick('Enter')}
             className={`${styles.key} flex w-[86px]  flex-row-reverse items-end rounded-md pb-1 pr-2`}
@@ -301,8 +232,8 @@ const Keys: React.FC<KeysProps> = ({
           >
             <BsShift />
           </div>
-          {renderCharKeys(37, 44)}
-          {renderSymKeys(44, 47)}
+          <CharKeys start={37} end={44} />
+          <SymbolKeys start={44} end={47} />
           <div
             onClick={onShiftClick}
             className={`${styles.key} flex w-28 flex-row-reverse items-end rounded-md pb-1 pr-2`}
@@ -312,7 +243,7 @@ const Keys: React.FC<KeysProps> = ({
         </div>
 
         <div className="flex">
-        {/* Function Keys */}
+          {/* Function Keys */}
           <OptionKeysL />
           <div
             onClick={() => onClick(' ')}

@@ -47,11 +47,11 @@ const config: Config = {
         },
         highlight: {
           '0%': {
-            background: theme('colors.vercel.pink'),
+            background: theme('colors.vercel.orange'),
             color: theme('colors.white'),
           },
-          '60%': {
-            background: theme('colors.vercel.pink'),
+          '40%': {
+            background: theme('colors.vercel.orange'),
             color: theme('colors.white'),
           },
         },
