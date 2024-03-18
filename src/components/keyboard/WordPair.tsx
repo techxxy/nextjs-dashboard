@@ -4,6 +4,7 @@ import styles from './styles.module.css';
 
 interface KeysProps {
   textDisplay: string;
+  resetTextInput: () => void;
 }
 
 interface WordPair {
@@ -21,8 +22,10 @@ const words: WordPair[] = [
   { german: 'Du', korean: '두' },
 ];
 
-const WordPairComponent: React.FC<KeysProps> = ({ textDisplay }) => {
-  const [shuffledArray, setShuffledArray] = useState<WordPair[]>([{ german: 'Banana', korean: '바나나' }]);
+const WordPairComponent: React.FC<KeysProps> = ({ textDisplay, resetTextInput }) => {
+  const [shuffledArray, setShuffledArray] = useState<WordPair[]>([
+    { german: '', korean: '' },
+  ]);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [vocaburaryHint, setDisassembledKorean] = useState<string>('');
 
@@ -43,6 +46,17 @@ const WordPairComponent: React.FC<KeysProps> = ({ textDisplay }) => {
     setDisassembledKorean(disassembled);
   }, [selectedIndex, shuffledArray]);
 
+  useEffect(() => {
+    if (textDisplay === shuffledArray[selectedIndex]?.korean) {
+      // Empty textDisplay
+      // Reset the selected index to move to the next pair
+      setTimeout(() => {
+      resetTextInput();
+      setSelectedIndex((prevIndex) => (prevIndex + 1) % shuffledArray.length);
+    }, 1000); 
+    }
+  }, [textDisplay, selectedIndex, shuffledArray]);
+
   // Function to shuffle array
   const shuffleArray = (array: WordPair[]): WordPair[] => {
     console.log('shuffleArray starts');
@@ -53,15 +67,6 @@ const WordPairComponent: React.FC<KeysProps> = ({ textDisplay }) => {
     }
     console.log('shuffleArray', array);
     return shuffled;
-  };
-
-  const handleNextPair = () => {
-    // Increment the index to select the next pair
-    setSelectedIndex((prevIndex) => (prevIndex + 1) % shuffledArray.length);
-  };
-
-  const resetTextDispaly = () => {
-    setTimeout(() => {}, 1000); // 1 second duration
   };
 
   return (

@@ -59,7 +59,7 @@ const Typing: React.FC = () => {
     ); // Change layout to shifted or unshifted Korean based on previous layout
   };
 
-  const emptyComposingCompletedLetters = () => {
+  const emptyInput = () => {
     setCompletedLetters('');
     setComposingLetter('');
   };
@@ -74,7 +74,7 @@ const Typing: React.FC = () => {
       >
         <WordPairComponent 
         textDisplay={completedLetters + composingLetter}
-        //resetTextInput={emptyComposingCompletedLetters}
+        resetTextInput={emptyInput}
         />
       </Boundary>
 
