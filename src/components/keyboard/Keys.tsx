@@ -25,6 +25,13 @@ const Keys: React.FC<KeysProps> = ({
     setShowCapslock(!showCapslock);
   };
 
+  interface LanguageKeys {
+    korean: string;
+    koreanShifted: string;
+    german: string;
+    germanShifted: string;
+  }
+
   const keyboardKeys: LanguageKeys[] = [
     { korean: '₩', koreanShifted: '~', german: '§', germanShifted: '°' },
     { korean: '1', koreanShifted: '!', german: '1', germanShifted: '+' },
@@ -81,12 +88,7 @@ const Keys: React.FC<KeysProps> = ({
     { korean: '-', koreanShifted: '_', german: '/', germanShifted: '?' },
   ];
 
-  interface LanguageKeys {
-    korean: string;
-    koreanShifted: string;
-    german: string;
-    germanShifted: string;
-  }
+
 
   function sendSelectedKey(clickedKey: LanguageKeys) {
     const correctKey =

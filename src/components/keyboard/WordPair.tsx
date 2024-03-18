@@ -22,57 +22,98 @@ const words: WordPair[] = [
 ];
 
 const WordPairComponent: React.FC<KeysProps> = ({ textDisplay }) => {
-  const [pair, setPair] = useState<WordPair>({ german: '', korean: '' });
+  const [shuffledArray, setShuffledArray] = useState<WordPair[]>([{ german: 'Banana', korean: '바나나' }]);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [vocaburaryHint, setDisassembledKorean] = useState<string>('');
 
   useEffect(() => {
     // Shuffle the array
-    const shuffledArray = shuffleArray([...words]);
+    const shuffled = shuffleArray([...words]);
+    setShuffledArray(shuffled);
+  }, []);
 
-    // Select the first pair
-    const selectedPair = shuffledArray[0];
+  useEffect(() => {
+    if (shuffledArray.length === 0) return;
 
+    // Select the pair based on the selectedIndex
+    const selectedPair = shuffledArray[selectedIndex];
     // Disassemble the Korean word
     const disassembled = Hangul.disassemble(selectedPair.korean).join('');
-
     // Display the pair
-    setPair(selectedPair);
     setDisassembledKorean(disassembled);
-  }, []);
+  }, [selectedIndex, shuffledArray]);
 
   // Function to shuffle array
   const shuffleArray = (array: WordPair[]): WordPair[] => {
-    for (let i = array.length - 1; i > 0; i--) {
+    console.log('shuffleArray starts');
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    return array;
+    console.log('shuffleArray', array);
+    return shuffled;
+  };
+
+  const handleNextPair = () => {
+    // Increment the index to select the next pair
+    setSelectedIndex((prevIndex) => (prevIndex + 1) % shuffledArray.length);
+  };
+
+  const resetTextDispaly = () => {
+    setTimeout(() => {}, 1000); // 1 second duration
   };
 
   return (
-    <div className="text-black m-auto grid w-fit grid-cols-1">
-      <div className="grid w-fit grid-cols-1 justify-self-center">
-        <div className="h-14 justify-self-center text-[50px]">{textDisplay}</div>
-        <div className="justify-self-center text-[50px] mt-2">{pair.korean}</div>
-      </div>
-      <div className="">
+    <div className="m-auto grid h-80 w-fit grid-cols-1 border-2 text-black">
+      <div className="grid h-fit w-fit grid-cols-1 justify-self-center">
         <div
-          
-          className={`h-[80px] font-mono flex text-center text-[60px]`}
+          className={`${
+            shuffledArray.length > 0 &&
+            textDisplay === shuffledArray[selectedIndex]?.korean
+              ? 'font-effect-fire-animation'
+              : ''
+          } h-14 justify-self-center text-[50px]`}
         >
-          {pair.german.split('').map((letter, index) => (
-            <div className={Hangul.disassemble(textDisplay).join('')[index] === vocaburaryHint[index] ? 'font-effect-fire-animation' : ''} key={`german-${index}`}>
-              {letter}
-            </div>
-          ))}
+          {textDisplay}
         </div>
         <div
-          className={`font-mono font-extrabold flex text-center text-[60px]`}
+          className={`${
+            shuffledArray.length > 0 &&
+            textDisplay === shuffledArray[selectedIndex]?.korean
+              ? 'font-effect-fire-animation'
+              : ''
+          } mt-2 justify-self-center text-[50px]`}
+        >
+          {shuffledArray.length > 0 && shuffledArray[selectedIndex]?.korean}
+        </div>
+      </div>
+      <div className="">
+        <div className={`flex h-[80px] text-center font-mono text-[60px]`}>
+          {shuffledArray[selectedIndex].german
+            .split('')
+            .map((letter, index) => (
+              <div
+                className={
+                  Hangul.disassemble(textDisplay).join('')[index] ===
+                  vocaburaryHint[index]
+                    ? 'font-effect-fire-animation'
+                    : ''
+                }
+                key={`german-${index}`}
+              >
+                {letter}
+              </div>
+            ))}
+        </div>
+        <div
+          className={`flex text-center font-mono text-[60px] font-extrabold`}
         >
           {vocaburaryHint.split('').map((letter, index) => (
             <div
               className={`${
-                Hangul.disassemble(textDisplay).join('')[index] === vocaburaryHint[index]
+                Hangul.disassemble(textDisplay).join('')[index] ===
+                vocaburaryHint[index]
                   ? 'font-effect-fire-animation'
                   : ''
               } 
