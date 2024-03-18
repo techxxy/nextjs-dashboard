@@ -10,6 +10,9 @@ const config: Config = {
   darkMode:'class',
   theme: {
     extend: {
+      animation: {
+        'gradient-shadow': 'gradient-shadow 2s infinite',
+      },
       gridTemplateColumns: {
         '13': 'repeat(13, minmax(0, 1fr))',
       },
@@ -37,6 +40,20 @@ const config: Config = {
         )}, 50px, ${theme('colors.gray.800')} 50%)`,
       }),
       keyframes: ({ theme }) => ({
+        'gradient-shadow': {
+          '0%': {
+            boxShadow: 'inset 0 0 25px #ffffff, 0 2px 0 #6c6c6c, 1px 3px 0 #484848, 0 2px 0 #c9c9c9, 0 2px 3px #333',
+          },
+          '30%': {
+            boxShadow: '0 0 17px 3px #ff000090, 0 0 4px 2px #ff0000',
+          },
+          '95%': {
+            boxShadow: '0 0 17px 3px #ff000090, 0 0 4px 2px #ff0000',
+          },
+          '100%': {
+            boxShadow: 'inset 0 0 25px #ffffff, 0 2px 0 #6c6c6c, 1px 3px 0 #484848, 0 2px 0 #c9c9c9, 0 2px 3px #333',
+          },
+        },
         rerender: {
           '0%': {
             ['border-color']: theme('colors.vercel.pink'),
@@ -89,6 +106,9 @@ const config: Config = {
           },
         },
       }),
+      boxShadow: {
+        'gradient-shadow': '0 0 25px #ffffff, 0 2px 0 #6c6c6c, 1px 3px 0 #484848, 0 2px 0 #c9c9c9, 0 2px 3px #333',
+      },
     },
   },
   plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],

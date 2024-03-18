@@ -5,6 +5,7 @@ import styles from './styles.module.css';
 interface KeysProps {
   textDisplay: string;
   resetTextInput: () => void;
+  onMismatch: (mismatch: string) => void; 
 }
 
 interface WordPair {
@@ -22,7 +23,11 @@ const words: WordPair[] = [
   { german: 'Du', korean: '두' },
 ];
 
-const WordPairComponent: React.FC<KeysProps> = ({ textDisplay, resetTextInput }) => {
+const WordPairComponent: React.FC<KeysProps> = ({
+  textDisplay,
+  resetTextInput,
+  onMismatch,
+}) => {
   const [shuffledArray, setShuffledArray] = useState<WordPair[]>([
     { german: '', korean: '' },
   ]);
@@ -33,6 +38,7 @@ const WordPairComponent: React.FC<KeysProps> = ({ textDisplay, resetTextInput })
     // Shuffle the array
     const shuffled = shuffleArray([...words]);
     setShuffledArray(shuffled);
+    console.log('shuffled', shuffled);
   }, []);
 
   useEffect(() => {
@@ -46,14 +52,27 @@ const WordPairComponent: React.FC<KeysProps> = ({ textDisplay, resetTextInput })
     setDisassembledKorean(disassembled);
   }, [selectedIndex, shuffledArray]);
 
+
+  useEffect(() => {
+    // Find the first mismatched character
+    for (let i = 0; i < vocaburaryHint.length; i++) {
+      if (Hangul.disassemble(textDisplay).join('')[i] !== vocaburaryHint[i]) {
+        // Send the mismatched character to the parent component
+        onMismatch(vocaburaryHint[i]);
+        break;
+      }
+    }
+  }, [textDisplay, vocaburaryHint, onMismatch]);
+
+
   useEffect(() => {
     if (textDisplay === shuffledArray[selectedIndex]?.korean) {
       // Empty textDisplay
       // Reset the selected index to move to the next pair
       setTimeout(() => {
-      resetTextInput();
-      setSelectedIndex((prevIndex) => (prevIndex + 1) % shuffledArray.length);
-    }, 1000); 
+        resetTextInput();
+        setSelectedIndex((prevIndex) => (prevIndex + 1) % shuffledArray.length);
+      }, 1000);
     }
   }, [textDisplay, selectedIndex, shuffledArray]);
 
@@ -70,15 +89,16 @@ const WordPairComponent: React.FC<KeysProps> = ({ textDisplay, resetTextInput })
   };
 
   return (
-    <div className="m-auto grid h-80 w-fit grid-cols-1 border-2 text-black">
-      <div className="grid h-fit w-fit grid-cols-1 justify-self-center">
+  <div className='max-w-[800px] min-w-[450px]'>
+    <div className="m-auto grid h-[320px] w-fit grid-cols-1 border-2 text-black">
+      <div className="border-2 grid w-fit grid-cols-1 justify-self-center">
         <div
           className={`${
             shuffledArray.length > 0 &&
             textDisplay === shuffledArray[selectedIndex]?.korean
               ? 'font-effect-fire-animation'
               : ''
-          } h-14 justify-self-center text-[50px]`}
+          } h-[50px] border-2 justify-self-left text-[50px]`}
         >
           {textDisplay}
         </div>
@@ -88,13 +108,13 @@ const WordPairComponent: React.FC<KeysProps> = ({ textDisplay, resetTextInput })
             textDisplay === shuffledArray[selectedIndex]?.korean
               ? 'font-effect-fire-animation'
               : ''
-          } mt-2 justify-self-center text-[50px]`}
+          } h-[60px] justify-self-center text-[50px]`}
         >
           {shuffledArray.length > 0 && shuffledArray[selectedIndex]?.korean}
         </div>
       </div>
       <div className="">
-        <div className={`flex h-[80px] text-center font-mono text-[60px]`}>
+        <div className={`h-[60px] mb-4 flex text-center font-mono text-[60px]`}>
           {shuffledArray[selectedIndex].german
             .split('')
             .map((letter, index) => (
@@ -112,15 +132,12 @@ const WordPairComponent: React.FC<KeysProps> = ({ textDisplay, resetTextInput })
             ))}
         </div>
         <div
-          className={`flex text-center font-mono text-[60px] font-extrabold`}
+          className={`h-[60px] flex text-center font-mono text-[60px] font-extrabold`}
         >
           {vocaburaryHint.split('').map((letter, index) => (
             <div
               className={`${
-                Hangul.disassemble(textDisplay).join('')[index] ===
-                vocaburaryHint[index]
-                  ? 'font-effect-fire-animation'
-                  : ''
+                Hangul.disassemble(textDisplay).join('')[index] === vocaburaryHint[index] ? 'font-effect-fire-animation' : ''
               } 
                text-[42px] `}
               key={`korean-${index}`}
@@ -130,6 +147,7 @@ const WordPairComponent: React.FC<KeysProps> = ({ textDisplay, resetTextInput })
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { BsArrowReturnLeft, BsShift, BsGlobe } from 'react-icons/bs';
 interface KeysProps {
   keyboardLayout: string[];
   language: string;
+  nextClick: string; // korean letter to click
   onClick: (key: string) => void;
   onShiftClick: () => void;
   onCapslockClick: () => void;
@@ -15,6 +16,7 @@ interface KeysProps {
 const Keys: React.FC<KeysProps> = ({
   keyboardLayout,
   language,
+  nextClick,
   onClick,
   onShiftClick,
   onCapslockClick,
@@ -88,8 +90,6 @@ const Keys: React.FC<KeysProps> = ({
     { korean: '-', koreanShifted: '_', german: '/', germanShifted: '?' },
   ];
 
-
-
   function sendSelectedKey(clickedKey: LanguageKeys) {
     const correctKey =
       language === 'korean'
@@ -153,14 +153,19 @@ const Keys: React.FC<KeysProps> = ({
       <div
         key={index}
         onClick={() => sendSelectedKey(keys)}
-        className={`${styles.key} w-[47px] items-end rounded-md`}
+        className={`${styles.key} 
+        ${nextClick === keys.korean ? 'shadow-gradient-shadow animate-gradient-shadow' : ''}
+        w-[47px] items-end rounded-md `}
       >
         <div className="grid grid-cols-2 gap-1 pt-1.5 text-sm leading-none ">
           <div className="ml-[3px]">
             {keys.korean === keys.koreanShifted ? '' : keys.koreanShifted}
           </div>
           <div className="mr-[3px]">{keys.germanShifted}</div>
-          <div className="ml-[3px]">{keys.korean}</div>
+          <div className={`ml-[3px]
+
+          `}
+          >{keys.korean}</div>
         </div>
       </div>
     ));

@@ -12,6 +12,8 @@ const Typing: React.FC = () => {
   const [selectedLayout, setSelectedLayout] = useState<string>('korean'); // State for selected keyboard layout
   const [completedLetters, setCompletedLetters] = useState<string>('');
   const [composingLetter, setComposingLetter] = useState<string>('');
+  const [nextChar, setNextChar] = useState<string>('');
+
 
   // Effect hook to handle key presses on the documents
   useDocumentKeyPress((key) => {
@@ -64,6 +66,11 @@ const Typing: React.FC = () => {
     setComposingLetter('');
   };
 
+  const showNextClick = (nextChar: string) => {
+    setNextChar(nextChar); // Set the nextChar state
+    console.log('nextChar', nextChar);
+  }
+
   return (
     <div>
       <Boundary
@@ -75,6 +82,7 @@ const Typing: React.FC = () => {
         <WordPairComponent 
         textDisplay={completedLetters + composingLetter}
         resetTextInput={emptyInput}
+        onMismatch={showNextClick}
         />
       </Boundary>
 
@@ -94,6 +102,7 @@ const Typing: React.FC = () => {
           onClick={handleVirtualKeyInput}
           onShiftClick={handleShiftClick}
           onCapslockClick={handleCapslockClick}
+          nextClick={nextChar}
         />
       </Boundary>
     </div>
