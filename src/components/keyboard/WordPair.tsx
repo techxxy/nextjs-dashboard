@@ -38,7 +38,6 @@ const WordPairComponent: React.FC<KeysProps> = ({
     // Shuffle the array
     const shuffled = shuffleArray([...words]);
     setShuffledArray(shuffled);
-    console.log('shuffled', shuffled);
   }, []);
 
   useEffect(() => {
@@ -84,21 +83,21 @@ const WordPairComponent: React.FC<KeysProps> = ({
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    console.log('shuffleArray', array);
+    console.log('const shuffleArray', shuffled);
     return shuffled;
   };
 
   return (
   <div className='max-w-[800px] min-w-[450px]'>
-    <div className="m-auto grid h-[320px] w-fit grid-cols-1 border-2 text-black">
-      <div className="border-2 grid w-fit grid-cols-1 justify-self-center">
+    <div className="m-auto grid h-[320px] w-fit grid-cols-1 text-gray-700">
+      <div className="grid w-fit grid-cols-1 justify-self-center">
         <div
           className={`${
             shuffledArray.length > 0 &&
             textDisplay === shuffledArray[selectedIndex]?.korean
               ? 'font-effect-fire-animation'
               : ''
-          } h-[50px] border-2 justify-self-left text-[50px]`}
+          } h-[50px] justify-self-left text-[50px]`}
         >
           {textDisplay}
         </div>

@@ -8,28 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Customer {
-  id        String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name      String     @db.VarChar(255)
-  email     String     @db.VarChar(255)
-  image_url String     @db.VarChar(255)
-  invoice  Invoice[]
-} 
-
-model Invoice {
-  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  customer_id String    @db.Uuid
-  amount      Int
-  status      String    @db.VarChar(255)
-  date        DateTime  @db.Date
-  customer    Customer @relation(fields: [customer_id], references: [id])
-}
-
-model Revenue {
-  month   String @unique @db.VarChar(4)
-  revenue Int
-}
-
 model User {
   id              String    @id @default(cuid())
   name            String?   
@@ -37,16 +15,22 @@ model User {
   emailVerifiedAt DateTime?
   emailVerifToken String?   @db.VarChar(255)
   password        String    @db.VarChar(255)
+  pressCounts     PressCount[]
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
 
-model Keyboard {
+model PressCount {
   id              Int       @id @default(autoincrement())
-  english         String    @db.Char
-  korean          String    @db.Char
-  koreanShifted   String    @db.Char
-  germanShifted   String    @db.Char
-  englishShifted  String    @db.Char
-  htmlStyle       String    @db.VarChar
+  user            User      @relation(fields: [userId], references: [id])
+  userId          String    
+  character       String  
+  count           Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
 }
+
+// npx prisma generate
+// npx prisma db push 

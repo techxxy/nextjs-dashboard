@@ -11,8 +11,8 @@ export default function Form() {
     const searchParams = useSearchParams()
 
     // Extracting email and verification_sent status from search parameters
-    const email = searchParams.get('email')
-    const verificationSent = Boolean(searchParams.get('verification_sent'))
+    const email = searchParams?.get('email')
+    const verificationSent = Boolean(searchParams?.get('verification_sent'))
 
     // Obtaining form state and action using useFormState hook
     const [formState, action] = useFormState(resendVerificationEmail.bind(null, email!), undefined);

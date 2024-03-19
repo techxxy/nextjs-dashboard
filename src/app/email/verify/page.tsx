@@ -13,8 +13,9 @@ export default function VerifyEmail() {
     // Extracts the email and token from the search parameters of the verification link URL
     // Here's an example link:
     // http://localhost:3000/email/verify?email=member@test.com&token=73b03a02ae3a2fcdd38a2a06df75b0abd26ca7aca5da7fb079200d118b1b0564
-    const email = searchParams.get('email')
-    const token = searchParams.get('token')
+
+    const email = searchParams?.get('email')
+    const token = searchParams?.get('token')
     console.log("VerifyEmail() email : ",email, "token ", token);
 
     // State for managing loading state and result message
