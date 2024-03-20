@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Keys from './Keys';
+import Keyboard from './Keyboard';
 import KeyboardSelector from './KeyboardSelector'; // Import component for selecting keyboard layout
 import { keyboardLayouts } from './keyboardLayouts'; // Import predefined keyboard layouts
 import useDocumentKeyPress from './useDocumentKeyPress';
@@ -78,7 +78,7 @@ const SchnuppernTyping: React.FC = () => {
         onMismatch={showNextClick}
         words={'schnuppernWords'}
         />
-        <Keys
+        <Keyboard
           language={selectedLayout}
           onClick={handleVirtualKeyInput}
           onShiftClick={handleShiftClick}

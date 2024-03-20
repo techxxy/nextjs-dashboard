@@ -1,13 +1,26 @@
 import React, { useState } from 'react';
-import Keys from './Keys';
+import Keyboard from './Keyboard';
 import KeyboardSelector from './KeyboardSelector'; // Import component for selecting keyboard layout
 import { keyboardLayouts } from './keyboardLayouts'; // Import predefined keyboard layouts
 import useDocumentKeyPress from './useDocumentKeyPress';
 import { hangulInputHandler } from './hangulInputHandler'; // Import custom hook for handling Hangul input
 import { Boundary } from '@/components/ui/boundary';
 import WordPairComponent from './WordPair';
+import TextDisplayComponent from './TextDisplay';
 
-const Typing: React.FC = () => {
+interface KeysProps {
+  keyboardMode?: 'original' | 'simple';
+  showKeyboardSelector?: boolean;
+  wordPair?: string;
+}
+
+
+const Typing: React.FC<KeysProps> = ({
+  keyboardMode = 'original',
+  showKeyboardSelector = false,
+  wordPair = '',
+}
+) => {
   // State variables
   const [selectedLayout, setSelectedLayout] = useState<string>('korean'); // State for selected keyboard layout
   const [completedLetters, setCompletedLetters] = useState<string>('');
@@ -73,39 +86,33 @@ const Typing: React.FC = () => {
 
   return (
     <div>
-      <Boundary
-        labels={['Korean']}
-        color="pink"
-        size="small"
-        animateRerendering={true}
-      >
         <WordPairComponent 
         textDisplay={completedLetters + composingLetter}
         resetTextInput={emptyInput}
         onMismatch={showNextClick}
-        words={'moreSchnuppernWords'}
+        words={wordPair}
         />
-      </Boundary>
 
+        <TextDisplayComponent 
+        textDisplay={completedLetters + composingLetter}
+        resetTextInput={emptyInput}
+        />
+
+     { showKeyboardSelector===true ?(
       <KeyboardSelector
         selectedLayout={selectedLayout}
         onSelectLayout={handleLayoutChange}
       />
-      <Boundary
-        labels={['Tastatur']}
-        color="default"
-        size="small"
-        animateRerendering={false}
-      >
-        <Keys
+      ) : ''
+    }
+        <Keyboard
           language={selectedLayout}
-          mode='simple'
+          mode={keyboardMode} //optional, default: origial
           onClick={handleVirtualKeyInput}
           onShiftClick={handleShiftClick}
           onCapslockClick={handleCapslockClick} //optional
           nextClick={nextChar}
         />
-      </Boundary>
     </div>
   );
 };

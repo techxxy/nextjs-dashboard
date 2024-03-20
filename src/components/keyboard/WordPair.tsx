@@ -108,6 +108,7 @@ const shuffleArray = (array: { german: string; korean: string; }[]): { german: s
           {shuffledArray.length > 0 && shuffledArray[selectedIndex]?.korean}
         </div>
       </div>
+      
       <div className="">
         <div className={`h-[60px] mb-4 flex text-center font-mono text-[60px]`}>
         {shuffledArray.length > 0 && shuffledArray[selectedIndex] && shuffledArray[selectedIndex].german
@@ -118,8 +119,7 @@ const shuffleArray = (array: { german: string; korean: string; }[]): { german: s
                   Hangul.disassemble(textDisplay).join('')[index] ===
                   vocaburaryHint[index]
                     ? 'font-effect-fire-animation'
-                    : ''
-                }
+                    : '' }
                 key={`german-${index}`}
               >
                 {letter}

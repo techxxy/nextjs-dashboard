@@ -13,8 +13,8 @@ interface KeysProps {
   onCapslockClick?: () => void;
 }
 
-const Keys: React.FC<KeysProps> = ({
-  language,
+const Keyboard: React.FC<KeysProps> = ({
+ language,
   mode = 'original',
   nextClick,
   onClick,
@@ -280,4 +280,4 @@ const Keys: React.FC<KeysProps> = ({
   );
 };
 
-export default Keys;
+export default Keyboard;

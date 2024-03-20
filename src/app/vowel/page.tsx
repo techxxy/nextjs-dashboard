@@ -8,18 +8,13 @@ const VowelsPage: React.FC = () => {
   return (
     <div>
      <div>
-        <h1>Vowels</h1>
-    <Boundary
-        labels={['Korean']}
-        color="default"
-        size="small"
-        animateRerendering={true}
-      >
-      <p className='text-gray-1000'>Lassen Sie uns deutsche Wörter so schreiben, wie sie klingen, auf Koreanisch.</p>
-      <p className='text-gray-1000'>Koreanisch Schreiben, Hangul ist ein Alphabet, das Laute darstellt. </p>
-      <p className='text-gray-1000'>Ein Hangul-Zeichen entspricht einer Silbe. </p>
-      </Boundary>
-      <Typing />
+        <h1>Consonante & Vocale </h1>
+
+     <Typing 
+      keyboardMode={'simple'}
+      showKeyboardSelector={true}
+      wordPair={'consonants'}
+      />
         </div>
       <h2>Alphabets Page</h2>
       <div>

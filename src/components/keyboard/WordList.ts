@@ -28,9 +28,30 @@ const wordList: WordList = {
         { german: 'I', korean: '이' },
         { german: 'O', korean: '오' },
         { german: 'U', korean: '우' },
+    ],
+    consonants: [
+        { german: 'GND K', korean: 'ㄱㄴㄷㅇㅋ' },
+/*         { german: 'N', korean: 'ㄴ' },
+        { german: 'D', korean: 'ㄷ' },
+        { german: ' ', korean: 'ㄹ' },
+        { german: 'M', korean: 'ㅁ' },
+        { german: 'B', korean: 'ㅂ' },
+        { german: 'S', korean: 'ㅅ' },
+        { german: ' ', korean: 'ㅇ' },
+        { german: ' ', korean: 'ㅈ' },
+        { german: ' ', korean: 'ㅊ' },
+        { german: 'K', korean: 'ㅋ' },
+        { german: 'T', korean: 'ㅌ' },
+        { german: 'P', korean: 'ㅍ' },
+        { german: 'H', korean: 'ㅎ' },
+        { german: ' ', korean: 'ㄲ' },
+        { german: ' ', korean: 'ㄸ' },
+        { german: ' ', korean: 'ㅃ' },
+        { german: ' ', korean: 'ㅆ' },
+        { german: ' ', korean: 'ㅉ' }, */
 
 
-]
+    ]
 };
 
 export {wordList}
