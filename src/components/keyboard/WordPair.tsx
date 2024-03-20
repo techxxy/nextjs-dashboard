@@ -1,47 +1,36 @@
 import { useEffect, useState } from 'react';
 import Hangul from 'hangul-js';
 import styles from './styles.module.css';
+import {wordList} from './WordList';
 
 interface KeysProps {
   textDisplay: string;
   resetTextInput: () => void;
-  onMismatch: (mismatch: string) => void; 
+  onMismatch: (mismatch: string) => void;
+  words: string;
 }
-
-interface WordPair {
-  german: string;
-  korean: string;
-}
-
-const words: WordPair[] = [
-  { german: 'Kino', korean: '키노' },
-  { german: 'Banana', korean: '바나나' },
-  { german: 'Kanal', korean: '카날' },
-  { german: 'Kugel', korean: '쿠겔' },
-  { german: 'man', korean: '만' },
-  { german: 'Nutella', korean: '누텔라' },
-  { german: 'Du', korean: '두' },
-];
 
 const WordPairComponent: React.FC<KeysProps> = ({
   textDisplay,
   resetTextInput,
   onMismatch,
+  words,
 }) => {
-  const [shuffledArray, setShuffledArray] = useState<WordPair[]>([
-    { german: '', korean: '' },
-  ]);
+  const [shuffledArray, setShuffledArray] = useState<{ german: string; korean: string; }[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [vocaburaryHint, setDisassembledKorean] = useState<string>('');
 
+  const selectedWordList = wordList[words] as { german: string; korean: string; }[];
+//  console.log('selectedWordList', selectedWordList);
+
   useEffect(() => {
     // Shuffle the array
-    const shuffled = shuffleArray([...words]);
+    const shuffled = shuffleArray(selectedWordList);
     setShuffledArray(shuffled);
   }, []);
 
   useEffect(() => {
-    if (shuffledArray.length === 0) return;
+    if (shuffledArray.length === 0 || shuffledArray[selectedIndex] === undefined) return;
 
     // Select the pair based on the selectedIndex
     const selectedPair = shuffledArray[selectedIndex];
@@ -75,17 +64,24 @@ const WordPairComponent: React.FC<KeysProps> = ({
     }
   }, [textDisplay, selectedIndex, shuffledArray]);
 
-  // Function to shuffle array
-  const shuffleArray = (array: WordPair[]): WordPair[] => {
-    console.log('shuffleArray starts');
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    console.log('const shuffleArray', shuffled);
-    return shuffled;
-  };
+// Function to shuffle array
+const shuffleArray = (array: { german: string; korean: string; }[]): { german: string; korean: string; }[] => {
+  console.log('shuffleArray starts');
+  
+  // Check if the array is valid and iterable
+  if (!Array.isArray(array)) {
+    console.error('Input is not a valid array');
+    return [];
+  }
+
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  console.log('const shuffleArray', shuffled);
+  return shuffled;
+};
 
   return (
   <div className='max-w-[800px] min-w-[450px]'>
@@ -114,9 +110,9 @@ const WordPairComponent: React.FC<KeysProps> = ({
       </div>
       <div className="">
         <div className={`h-[60px] mb-4 flex text-center font-mono text-[60px]`}>
-          {shuffledArray[selectedIndex].german
+        {shuffledArray.length > 0 && shuffledArray[selectedIndex] && shuffledArray[selectedIndex].german
             .split('')
-            .map((letter, index) => (
+            .map((letter:string, index:number) => (
               <div
                 className={
                   Hangul.disassemble(textDisplay).join('')[index] ===

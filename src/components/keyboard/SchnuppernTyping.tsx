@@ -4,10 +4,9 @@ import KeyboardSelector from './KeyboardSelector'; // Import component for selec
 import { keyboardLayouts } from './keyboardLayouts'; // Import predefined keyboard layouts
 import useDocumentKeyPress from './useDocumentKeyPress';
 import { hangulInputHandler } from './hangulInputHandler'; // Import custom hook for handling Hangul input
-import { Boundary } from '@/components/ui/boundary';
 import WordPairComponent from './WordPair';
 
-const Typing: React.FC = () => {
+const SchnuppernTyping: React.FC = () => {
   // State variables
   const [selectedLayout, setSelectedLayout] = useState<string>('korean'); // State for selected keyboard layout
   const [completedLetters, setCompletedLetters] = useState<string>('');
@@ -73,41 +72,21 @@ const Typing: React.FC = () => {
 
   return (
     <div>
-      <Boundary
-        labels={['Korean']}
-        color="pink"
-        size="small"
-        animateRerendering={true}
-      >
         <WordPairComponent 
         textDisplay={completedLetters + composingLetter}
         resetTextInput={emptyInput}
         onMismatch={showNextClick}
-        words={'moreSchnuppernWords'}
+        words={'schnuppernWords'}
         />
-      </Boundary>
-
-      <KeyboardSelector
-        selectedLayout={selectedLayout}
-        onSelectLayout={handleLayoutChange}
-      />
-      <Boundary
-        labels={['Tastatur']}
-        color="default"
-        size="small"
-        animateRerendering={false}
-      >
         <Keys
           language={selectedLayout}
-          //keyboardLayout={keyboardLayouts[selectedLayout]}
           onClick={handleVirtualKeyInput}
           onShiftClick={handleShiftClick}
-          onCapslockClick={handleCapslockClick} //optional
+          //onCapslockClick={handleCapslockClick}
           nextClick={nextChar}
         />
-      </Boundary>
     </div>
   );
 };
 
-export default Typing; // Export Typing component
+export default SchnuppernTyping; // Export Typing component

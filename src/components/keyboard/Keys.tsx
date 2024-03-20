@@ -5,16 +5,14 @@ import { MdOutlineBackspace, MdOutlineKeyboardTab } from 'react-icons/md';
 import { BsArrowReturnLeft, BsShift, BsGlobe } from 'react-icons/bs';
 
 interface KeysProps {
-  keyboardLayout: string[];
   language: string;
   nextClick: string; // korean letter to click
   onClick: (key: string) => void;
   onShiftClick: () => void;
-  onCapslockClick: () => void;
+  onCapslockClick?: () => void;
 }
 
 const Keys: React.FC<KeysProps> = ({
-  keyboardLayout,
   language,
   nextClick,
   onClick,

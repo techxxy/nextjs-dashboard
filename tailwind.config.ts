@@ -64,11 +64,11 @@ const config: Config = {
         },
         highlight: {
           '0%': {
-            background: theme('colors.vercel.orange'),
+            background: theme('colors.vercel.pink'),
             color: theme('colors.white'),
           },
           '40%': {
-            background: theme('colors.vercel.orange'),
+            background: theme('colors.vercel.pink'),
             color: theme('colors.white'),
           },
         },
