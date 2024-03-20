@@ -6,6 +6,7 @@ import { BsArrowReturnLeft, BsShift, BsGlobe } from 'react-icons/bs';
 
 interface KeysProps {
   language: string;
+  mode?: 'original' | 'simple';
   nextClick: string; // korean letter to click
   onClick: (key: string) => void;
   onShiftClick: () => void;
@@ -14,13 +15,13 @@ interface KeysProps {
 
 const Keys: React.FC<KeysProps> = ({
   language,
+  mode = 'original',
   nextClick,
   onClick,
   onShiftClick,
   onCapslockClick,
 }) => {
   const [showCapslock, setShowCapslock] = useState(true);
-
   const toggleCapslock = () => {
     setShowCapslock(!showCapslock);
   };
@@ -88,7 +89,7 @@ const Keys: React.FC<KeysProps> = ({
     { korean: '-', koreanShifted: '_', german: '/', germanShifted: '?' },
   ];
 
-  function sendSelectedKey(clickedKey: LanguageKeys) {
+  function selectedKey(clickedKey: LanguageKeys) {
     const correctKey =
       language === 'korean'
         ? clickedKey.korean
@@ -97,6 +98,11 @@ const Keys: React.FC<KeysProps> = ({
         : language === 'koreanShifted'
         ? clickedKey.koreanShifted
         : clickedKey.germanShifted;
+    return correctKey;
+  }
+
+  function sendSelectedKey(clickedKey: LanguageKeys) {
+    const correctKey = selectedKey(clickedKey);
     onClick(correctKey);
   }
 
@@ -107,6 +113,9 @@ const Keys: React.FC<KeysProps> = ({
         onClick={() => sendSelectedKey(keys)}
         className={`${styles.key} w-[47px] items-end rounded-md`}
       >
+        {mode === 'simple' ? (
+          <div className="pt-2.5">{selectedKey(keys)}</div>
+        ) : (
         <div className="flex flex-col items-center gap-1.5">
           <div className="mt-1.5 text-[10px] leading-none">
             {language === 'korean' || language === 'koreanShifted'
@@ -119,6 +128,7 @@ const Keys: React.FC<KeysProps> = ({
               : keys.german}
           </div>
         </div>
+        )}
       </div>
     ));
   };
@@ -130,18 +140,22 @@ const Keys: React.FC<KeysProps> = ({
         onClick={() => sendSelectedKey(keys)}
         className={`${styles.key} w-[47px] items-end rounded-md`}
       >
-        <div className="grid grid-cols-1 gap-1 text-[13px] leading-none">
-          <div className="mt-[5px]">
-            {language === 'korean' || language === 'koreanShifted'
-              ? keys.koreanShifted
-              : keys.germanShifted}
+        {mode === 'simple' ? (
+          <div className="pt-2.5">{selectedKey(keys)}</div>
+        ) : (
+          <div className="grid grid-cols-1 gap-1 text-[13px] leading-none">
+            <div className="mt-[5px]">
+              {language === 'korean' || language === 'koreanShifted'
+                ? keys.koreanShifted
+                : keys.germanShifted}
+            </div>
+            <div className="mb-1">
+              {language === 'korean' || language === 'koreanShifted'
+                ? keys.korean
+                : keys.german}
+            </div>
           </div>
-          <div className="mb-1">
-            {language === 'korean' || language === 'koreanShifted'
-              ? keys.korean
-              : keys.german}
-          </div>
-        </div>
+        )}
       </div>
     ));
   };
@@ -152,19 +166,24 @@ const Keys: React.FC<KeysProps> = ({
         key={index}
         onClick={() => sendSelectedKey(keys)}
         className={`${styles.key} 
-        ${nextClick === keys.korean ? 'shadow-gradient-shadow animate-gradient-shadow' : ''}
+        ${
+          nextClick === keys.korean
+            ? 'animate-gradient-shadow shadow-gradient-shadow'
+            : ''
+        }
         w-[47px] items-end rounded-md `}
       >
-        <div className="grid grid-cols-2 gap-1 pt-1.5 text-sm leading-none ">
-          <div className="ml-[3px]">
-            {keys.korean === keys.koreanShifted ? '' : keys.koreanShifted}
+        {mode === 'simple' ? (
+          <div className="pt-2.5">{selectedKey(keys)}</div>
+        ) : (
+          <div className="grid grid-cols-2 gap-1 pt-1.5 text-sm leading-none ">
+            <div className="ml-[3px]">
+              {keys.korean === keys.koreanShifted ? '' : keys.koreanShifted}
+            </div>
+            <div className="mr-[3px]">{keys.germanShifted}</div>
+            <div className={`ml-[3px]`}>{keys.korean}</div>
           </div>
-          <div className="mr-[3px]">{keys.germanShifted}</div>
-          <div className={`ml-[3px]
-
-          `}
-          >{keys.korean}</div>
-        </div>
+        )}
       </div>
     ));
   };

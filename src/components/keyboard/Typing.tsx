@@ -99,7 +99,7 @@ const Typing: React.FC = () => {
       >
         <Keys
           language={selectedLayout}
-          //keyboardLayout={keyboardLayouts[selectedLayout]}
+          mode='simple'
           onClick={handleVirtualKeyInput}
           onShiftClick={handleShiftClick}
           onCapslockClick={handleCapslockClick} //optional

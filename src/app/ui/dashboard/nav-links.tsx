@@ -16,7 +16,7 @@ import clsx from 'clsx';
 const links = [
   { name: 'Schnuppern', href: '/schnuppern', icon: HomeIcon },
   { name: 'Vocal', href: '/alphabets', icon: LanguageIcon },
-  { name: 'Alphabet', href: '/alphabets', icon: LanguageIcon },
+  { name: 'Keyboard Example', href: '/alphabets', icon: LanguageIcon },
   { name: 'PressCountAPI', href: '/sample', icon: HomeIcon },
   { name: 'Home', href: '/alphabets', icon: HomeIcon },
 ];
