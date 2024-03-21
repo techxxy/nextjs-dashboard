@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import Keyboard from './Keyboard';
-import KeyboardSelector from './KeyboardSelector'; // Import component for selecting keyboard layout
-import { keyboardLayouts } from './keyboardLayouts'; // Import predefined keyboard layouts
+import KeyboardSelector from './KeyboardSelector'; 
 import useDocumentKeyPress from './useDocumentKeyPress';
-import { hangulInputHandler } from './hangulInputHandler'; // Import custom hook for handling Hangul input
-import { Boundary } from '@/components/ui/boundary';
-import WordPairComponent from './WordPair';
-import TextDisplayComponent from './TextDisplay';
+import { hangulInputHandler } from './hangulInputHandler'; 
+import WordPairDisplay from './WordPairDisplay';
+import TextDisplay from './TextDisplay';
+import type { WordList, WordPair } from '@/lib/definitions';
 
 interface KeysProps {
-  keyboardMode?: 'original' | 'simple';
-  showKeyboardSelector?: boolean;
-  wordPair?: string;
+  keyboardMode: 'original' | 'simple' | 'mixed';
+  showKeyboardSelector: boolean;
+  textDisplayType?: 'all' | 'pair';
+  wordSet: WordPair |  WordList;
 }
-
 
 const Typing: React.FC<KeysProps> = ({
   keyboardMode = 'original',
   showKeyboardSelector = false,
-  wordPair = '',
+  wordSet,
+  textDisplayType= 'all',
 }
 ) => {
+
+ 
+
   // State variables
   const [selectedLayout, setSelectedLayout] = useState<string>('korean'); // State for selected keyboard layout
   const [completedLetters, setCompletedLetters] = useState<string>('');
@@ -86,35 +89,38 @@ const Typing: React.FC<KeysProps> = ({
 
   return (
     <div>
-        <WordPairComponent 
+      {textDisplayType==='pair' ? (
+       <WordPairDisplay 
         textDisplay={completedLetters + composingLetter}
         resetTextInput={emptyInput}
         onMismatch={showNextClick}
-        words={wordPair}
+        wordSet={wordSet as WordPair}
         />
-
-        <TextDisplayComponent 
+      ) : (
+        <TextDisplay 
         textDisplay={completedLetters + composingLetter}
         resetTextInput={emptyInput}
+        wordSet={wordSet as WordList}
         />
-
-     { showKeyboardSelector===true ?(
-      <KeyboardSelector
-        selectedLayout={selectedLayout}
-        onSelectLayout={handleLayoutChange}
-      />
-      ) : ''
-    }
+     )}
+      { showKeyboardSelector === true ?(
+        <KeyboardSelector
+          selectedLayout={selectedLayout}
+          onSelectLayout={handleLayoutChange}
+        />
+        ) : ''
+      }
         <Keyboard
           language={selectedLayout}
-          mode={keyboardMode} //optional, default: origial
+          mode={keyboardMode} 
           onClick={handleVirtualKeyInput}
           onShiftClick={handleShiftClick}
-          onCapslockClick={handleCapslockClick} //optional
+          {...(showKeyboardSelector === true ? { onCapslockClick: handleCapslockClick } : {})}
           nextClick={nextChar}
         />
     </div>
-  );
-};
+  )
 
+
+};
 export default Typing; // Export Typing component

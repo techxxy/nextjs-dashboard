@@ -6,7 +6,7 @@ import { BsArrowReturnLeft, BsShift, BsGlobe } from 'react-icons/bs';
 
 interface KeysProps {
   language: string;
-  mode?: 'original' | 'simple';
+  mode: 'original' | 'simple' | 'mixed';
   nextClick: string; // korean letter to click
   onClick: (key: string) => void;
   onShiftClick: () => void;
@@ -173,7 +173,7 @@ const Keyboard: React.FC<KeysProps> = ({
         }
         w-[47px] items-end rounded-md `}
       >
-        {mode === 'simple' ? (
+        {mode !== 'original' ? (
           <div className="pt-2.5">{selectedKey(keys)}</div>
         ) : (
           <div className="grid grid-cols-2 gap-1 pt-1.5 text-sm leading-none ">

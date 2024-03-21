@@ -1,31 +1,30 @@
 import { useEffect, useState } from 'react';
 import Hangul from 'hangul-js';
 import styles from './styles.module.css';
-import {wordList} from './WordList';
+import type { WordPair } from '@/lib/definitions';
 
 interface KeysProps {
   textDisplay: string;
   resetTextInput: () => void;
   onMismatch: (mismatch: string) => void;
-  words: string;
+  wordSet: WordPair;
 }
 
-const WordPairComponent: React.FC<KeysProps> = ({
+const WordPairDisplay: React.FC<KeysProps> = ({
   textDisplay,
   resetTextInput,
   onMismatch,
-  words,
+  wordSet,
 }) => {
   const [shuffledArray, setShuffledArray] = useState<{ german: string; korean: string; }[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [vocaburaryHint, setDisassembledKorean] = useState<string>('');
 
-  const selectedWordList = wordList[words] as { german: string; korean: string; }[];
-//  console.log('selectedWordList', selectedWordList);
+  console.log('wordPair', wordSet);
 
   useEffect(() => {
     // Shuffle the array
-    const shuffled = shuffleArray(selectedWordList);
+    const shuffled = shuffleArray(wordSet);
     setShuffledArray(shuffled);
   }, []);
 
@@ -43,6 +42,9 @@ const WordPairComponent: React.FC<KeysProps> = ({
 
   useEffect(() => {
     // Find the first mismatched character
+    if (Hangul.disassemble(textDisplay).join('') === vocaburaryHint) {
+      onMismatch('');
+    } else {
     for (let i = 0; i < vocaburaryHint.length; i++) {
       if (Hangul.disassemble(textDisplay).join('')[i] !== vocaburaryHint[i]) {
         // Send the mismatched character to the parent component
@@ -50,6 +52,7 @@ const WordPairComponent: React.FC<KeysProps> = ({
         break;
       }
     }
+  }
   }, [textDisplay, vocaburaryHint, onMismatch]);
 
 
@@ -60,7 +63,7 @@ const WordPairComponent: React.FC<KeysProps> = ({
       setTimeout(() => {
         resetTextInput();
         setSelectedIndex((prevIndex) => (prevIndex + 1) % shuffledArray.length);
-      }, 1000);
+      }, 800);
     }
   }, [textDisplay, selectedIndex, shuffledArray]);
 
@@ -108,7 +111,7 @@ const shuffleArray = (array: { german: string; korean: string; }[]): { german: s
           {shuffledArray.length > 0 && shuffledArray[selectedIndex]?.korean}
         </div>
       </div>
-      
+
       <div className="">
         <div className={`h-[60px] mb-4 flex text-center font-mono text-[60px]`}>
         {shuffledArray.length > 0 && shuffledArray[selectedIndex] && shuffledArray[selectedIndex].german
@@ -147,4 +150,4 @@ const shuffleArray = (array: { german: string; korean: string; }[]): { german: s
   );
 };
 
-export default WordPairComponent;
+export default WordPairDisplay;

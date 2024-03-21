@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import Typing from '@/components/keyboard/Typing';
-import { Boundary } from '@/components/ui/boundary';
+import type { WordList } from '@/lib/definitions';
 
 const VowelsPage: React.FC = () => {
 
@@ -11,16 +11,23 @@ const VowelsPage: React.FC = () => {
         <h1>Consonante & Vocale </h1>
 
      <Typing 
-      keyboardMode={'simple'}
+      keyboardMode="mixed"
       showKeyboardSelector={true}
-      wordPair={'consonants'}
-      />
-        </div>
+      textDisplayType="all"
+      wordSet={alphabets}
+/>
+      </div>
       <h2>Alphabets Page</h2>
       <div>
       </div>
     </div>
   );
 };
-
 export default VowelsPage;
+
+
+const alphabets: WordList = {
+  alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+  laut: ['a', 'be', 'tse', 'de', 'e', '', 'ge'],
+  korean: ['아', '베', '체', '데', '에', '', '게'],
+};
