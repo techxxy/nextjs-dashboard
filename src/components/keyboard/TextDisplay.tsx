@@ -17,7 +17,11 @@ const TextDisplay: React.FC<KeysProps> = ({
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [vocaburaryHint, setDisassembledKorean] = useState<string>('');
 
+  const columns = wordSet.korean.length;
+  console.log('wordSet.korean.length', wordSet.korean.length);
+
   const renderWordLetters = (word: string[], isKorean: boolean) => {
+
     return (
       <div className={`grid grid-cols-${columns}`}>
         {word.map((letter, index) => (
@@ -34,9 +38,8 @@ const TextDisplay: React.FC<KeysProps> = ({
     );
   };
 
-  const columns = wordSet.korean.length;
 
-  function fontEffect(index: number, letter: string){
+function fontEffect(index: number, letter: string){
     return letter === wordSet.korean?.[index] ? 'font-effect-neon' : ''
   }
   

@@ -10,12 +10,12 @@ export type Item = {
       items: [
         {
           name: 'Schnuppern',
-          slug: 'layouts',
+          slug: 'schnuppern',
           description: 'Schreiben Sie deutsche Wörter, wie sie klingen, auf Koreanisch.',
         },
         {
-          name: 'Grouped Layouts',
-          slug: 'route-groups',
+          name: 'Alphabets',
+          slug: 'vowel',
           description: 'Organize routes without affecting URL paths',
         },
       ],

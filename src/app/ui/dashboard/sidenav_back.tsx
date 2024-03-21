@@ -2,8 +2,6 @@ import Link from 'next/link';
 import NavLinks from '@/app/ui/dashboard/nav-links';
 import { PowerIcon } from '@heroicons/react/24/outline';
 import { signOut } from '@/auth';
-import { GlobalNav } from '@/components/ui/global-nav';
-
 
 export default function SideNav() {
   return (
@@ -17,7 +15,6 @@ export default function SideNav() {
 
       <div className="flex grow flex-row justify-between space-x-2 lg:flex-col lg:space-x-0 lg:space-y-2">
         <NavLinks />
-        <GlobalNav />
 
         <div className="hidden h-auto w-full grow rounded-md bg-gray-50 lg:block">
         </div>
