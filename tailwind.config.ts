@@ -35,9 +35,13 @@ const config: Config = {
         },
       },
       backgroundImage: ({ theme }) => ({
+        'gradient-br': 'linear-gradient(to bottom right, rgba(243, 244, 246, 1) 3%, rgba(255, 255, 255, 0.9) 5%, rgba(243, 244, 246, 0.7) 20%)',
         'vc-border-gradient': `radial-gradient(at left top, ${theme(
           'colors.gray.500',
         )}, 50px, ${theme('colors.gray.800')} 50%)`,
+        'vc-border-gradient-light': `radial-gradient(at left top, ${theme(
+          'colors.gray.50',
+        )}, 50px, ${theme('colors.gray.400')} 50%)`,
       }),
       keyframes: ({ theme }) => ({
         'gradient-shadow': {

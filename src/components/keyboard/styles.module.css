@@ -2,7 +2,7 @@
   transform: perspective(1080px) rotateX(20deg);
   border: 1px solid rgb(231, 231, 231);
   border-radius: 30px;
-  margin: 10px;
+  margin: 10px auto 10px auto;
   padding: 6px;
   max-width: 833px;
   min-width: 450px;

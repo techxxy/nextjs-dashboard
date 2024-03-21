@@ -118,6 +118,7 @@ const Typing: React.FC<KeysProps> = ({
           {...(showKeyboardSelector === true ? { onCapslockClick: handleCapslockClick } : {})}
           nextClick={nextChar}
         />
+        
     </div>
   )
 

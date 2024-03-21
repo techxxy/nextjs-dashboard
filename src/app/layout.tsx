@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <Provider> 
+        <Provider>
           <div className="flex h-screen flex-col lg:flex-row lg:overflow-hidden">
             <div className="w-full flex-none lg:w-64">
               <SideNav />
@@ -43,13 +43,18 @@ export default function RootLayout({
 
             <div className="max-w-[980px] flex-grow px-2 lg:overflow-y-auto lg:p-4">
 
-              <div className="rounded-lg bg-vc-border-gradient p-px shadow-lg shadow-black/20">
-                <div className="rounded-lg bg-black">
+              <div className="rounded-lg bg-opacity-80 dark:bg-vc-border-gradient bg-vc-border-gradient-light p-px shadow-lg shadow-black/20">
+                <div className="flex justify-between rounded-lg dark:bg-none bg-gradient-br dark:bg-black">
+                  <div  className=''>
                   <AddressBar />
+                  </div>
+                  <div className=' my-auto mr-6'>
+                  <ThemeSwitcher />
+                  </div>
                 </div>
               </div>
-              <ThemeSwitcher />
-              <div>{children}</div>
+
+             <div>{children}</div>
             </div>
           </div>
         </Provider>

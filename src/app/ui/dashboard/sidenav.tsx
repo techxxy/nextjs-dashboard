@@ -7,7 +7,7 @@ import { GlobalNav } from '@/components/ui/global-nav';
 
 export default function SideNav() {
   return (
-    <div className="flex h-full flex-col px-3 py-4 lg:px-2">
+    <div className="flex h-full flex-col px-3 py-4 lg:px-2 ">
       <Link
         className="mb-2 flex h-20 items-end justify-start rounded-md bg-blue-600 p-4 lg:h-40"
         href="/"
@@ -19,7 +19,7 @@ export default function SideNav() {
         <NavLinks />
         <GlobalNav />
 
-        <div className="hidden h-auto w-full grow rounded-md bg-gray-50 lg:block">
+        <div className="hidden h-auto w-full grow rounded-md lg:blockt">
         </div>
         
         <form
