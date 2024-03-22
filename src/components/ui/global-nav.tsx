@@ -60,7 +60,7 @@ export function GlobalNav() {
             {menus.map((section) => {
               return (
                 <div key={section.name}>
-                  <div className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400/80">
+                  <div className="mb-2 px-3 text-base font-semibold uppercase tracking-wider text-gray-400/80">
                     <div>{section.name}</div>
                   </div>
                   
@@ -111,7 +111,7 @@ function GlobalNavItem({
       onClick={close}
       href={`/${item.slug}`}
       className={clsx(
-        'block rounded-md px-3 py-2 text-sm font-medium hover:text-gray-300',
+        'block rounded-md px-3 py-2 text-base hover:text-gray-300',
         {
           'text-gray-400 hover:bg-gray-800': !isActive,
           'text-white': isActive,

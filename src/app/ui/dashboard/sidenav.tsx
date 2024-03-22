@@ -19,9 +19,7 @@ export default function SideNav() {
         <NavLinks />
         <GlobalNav />
 
-        <div className="hidden h-auto w-full grow rounded-md lg:blockt">
-        </div>
-        
+       
         <form
           action={async () => {
             'use server';

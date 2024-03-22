@@ -189,7 +189,7 @@ const Keyboard: React.FC<KeysProps> = ({
   };
 
   return (
-    <div className='justify-self-center'>
+    <div className='justify-self-center mb-10'>
       <div className={`${styles.keyboard}` }>
         {/* Function Keys */}
         <div className="flex">

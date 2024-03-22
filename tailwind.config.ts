@@ -41,7 +41,7 @@ const config: Config = {
         )}, 50px, ${theme('colors.gray.800')} 50%)`,
         'vc-border-gradient-light': `radial-gradient(at left top, ${theme(
           'colors.gray.50',
-        )}, 50px, ${theme('colors.gray.400')} 50%)`,
+        )}, 50px, ${theme('colors.gray.300')} 50%)`,
       }),
       keyframes: ({ theme }) => ({
         'gradient-shadow': {
