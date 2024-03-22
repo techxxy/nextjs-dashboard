@@ -4,22 +4,22 @@ import { PowerIcon } from '@heroicons/react/24/outline';
 import { signOut } from '@/auth';
 import { GlobalNav } from '@/components/ui/global-nav';
 
-
 export default function SideNav() {
   return (
-    <div className="flex h-full flex-col px-3 py-4 lg:px-2 ">
-      <Link
-        className="mb-2 flex h-20 items-end justify-start rounded-md bg-blue-600 p-4 lg:h-40"
-        href="/"
-      >
-      </Link>
+    <div className="flex h-full flex-row lg:flew-col">
 
 
-      <div className="flex grow flex-row justify-between space-x-2 lg:flex-col lg:space-x-0 lg:space-y-2">
-        <NavLinks />
+
+      <div className="flex grow flex-row justify-between space-x-2 h-40 p-4 lg:h-full lg:flex-col lg:space-x-0 lg:space-y-2">
+
+
+      <div className="flex w-full lg:flex-col lg:h-full flex-row rounded-lg bg-opacity-80 dark:bg-vc-border-gradient p-px shadow-lg ">
+     <div className="flex w-full lg:flex-col lg:h-full flex-row justify-between rounded-lg dark:bg-none dark:bg-black">
+
         <GlobalNav />
+        </div>
+        </div>
 
-       
         <form
           action={async () => {
             'use server';
@@ -33,7 +33,6 @@ export default function SideNav() {
         </form>
 
       </div>
-
     </div>
   );
 }
