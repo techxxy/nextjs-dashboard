@@ -36,19 +36,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased `}>
+      <body className={`${inter.className} antialiased`}>
         <Provider>
           <div className="flex h-screen flex-col lg:flex-row lg:overflow-hidden">
 
 
-            <div className="w-full lg:w-72 flex-none ">
+            <div className="w-full lg:w-72 flex-none">
               <SideNav />
               {/*           <GlobalNav /> */}
             </div>
 
             <div className="max-w-[980px] flex-grow px-2 lg:overflow-y-auto lg:p-4">
+
               <div className="rounded-lg bg-opacity-80 dark:bg-vc-border-gradient  p-px shadow-lg ">
                 <div className="flex justify-between rounded-lg dark:bg-none  dark:bg-black">
+
                   <div  className=''>
                   <AddressBar />
                   </div>
@@ -62,7 +64,6 @@ export default function RootLayout({
                   <div className="rounded-lg dark:bg-black dark:bg-none p-3.5 lg:p-6">{children}</div>
               </div>
             </div>
-
 
           </div>
         </Provider>
