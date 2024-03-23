@@ -23,10 +23,10 @@ const TextDisplay: React.FC<KeysProps> = ({
   const renderWordLetters = (word: string[], isKorean: boolean) => {
 
     return (
-      <div className={`grid grid-cols-${columns}`}>
+      <div className={`flex flex-row text-base w-full max-w-5xl`}>
         {word.map((letter, index) => (
           <div
-            className={`justify-self-center border-2 ${
+            className={`flex-1 justify-self-center text-center border-2 ${
               isKorean && letter === textDisplay[index] ? 'neon' : ''
             }`}
             key={index}
@@ -45,16 +45,16 @@ function fontEffect(index: number, letter: string){
   
   return (
     <div className="min-w-[450px] max-w-[800px] font-mono border-2 text-[30px]">
-      <div className="m-auto h-[320px] w-fit  text-gray-700 border-2">
+      <div className="h-[320px] w-full text-gray-700 border-2">
         {Object.entries(wordSet).map(([key, word], index) => (
           <React.Fragment key={index}>
             {renderWordLetters(word, key === 'korean')}
           </React.Fragment>
         ))}
-        <div className={`grid grid-cols-${columns}`}>
+        <div className={`grid grid-cols-24 gap-1 w-full max-w-5xl`}>
           {Array.from(textDisplay).map((letter, index) => (
             <div
-              className={`justify-self-center border-2 ${
+              className={`col-span-1 justify-self-center text-center border-2 ${
                 fontEffect(index, letter)
               }`}
               key={index}>

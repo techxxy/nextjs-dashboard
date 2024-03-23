@@ -11,7 +11,7 @@ import { Button } from '../button';
 import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/lib/actions';
 import Link from "next/link";
-import { signUp } from "@/app/actions/auth";
+import { signUp } from "@/services/auth";
 
 export default function SignUpForm() {
   const [errorMessage, dispatch] = useFormState(signUp, {

@@ -53,7 +53,7 @@ export default function FnKeys() {
       {functionKeys.map(({ code, icon: Icon }, index) => (
         <div
           key={index}
-          className={`${styles.key} flex w-[47px] flex-col items-center gap-1.5 rounded-md pt-2`}
+          className={`${styles.key} flex flex-grow w-[47px] flex-col items-center gap-1.5 rounded-md pt-2`}
         >
           <Icon size="13" />
           <div className="text-[8px]">{code}</div>
@@ -81,7 +81,7 @@ export function OptionKeysL() {
       {optionKeys.slice(0, 1).map(({ code, icon: Icon }, index) => (
         <div
           key={index}
-          className={`${styles.key} flex w-[47px] flex-col gap-1 rounded-bl-[20px] rounded-br-md  rounded-tl-md rounded-tr-md pl-2 py-1`}
+          className={`${styles.key} hidden md:flex w-[47px] flex-col gap-1 rounded-bl-[20px] rounded-br-md  rounded-tl-md rounded-tr-md pl-2 py-1`}
         >
           <div className="text-[11px] pl-2">{code}</div>
           <Icon size="13" />
@@ -90,7 +90,7 @@ export function OptionKeysL() {
       {optionKeys.slice(1, 4).map(({ code, icon: Icon }, index) => (
         <div
           key={index}
-          className={`${styles.key} flex w-fit min-w-[47px] flex-col items-end gap-1 rounded-md px-[7px] py-1 `}
+          className={`${styles.key} hidden md:flex w-fit min-w-[47px] flex-col items-end gap-1 rounded-md px-[7px] py-1 `}
         >
           <Icon />
           <div className=" text-[11px]">{code}</div>
@@ -109,16 +109,16 @@ export function OptionKeysR() {
         .map(({ code, icon: Icon }, index) => (
           <div
             key={index}
-            className={`${styles.key} flex flex-col w-fit items-start gap-1 rounded-md px-[7px] py-1 `}
+            className={`${styles.key} hidden md:flex flex-col w-fit items-start gap-1 rounded-md px-[7px] py-1 `}
           >
             <Icon />
             <div className=" text-[11px]">{code}</div>
           </div>
         ))}
-      <div className={`${styles.key} w-[47px] rounded-md flex flex-col items-center pt-3`}>
+      <div className={`${styles.key} hidden md:flex w-[47px] rounded-md flex-col items-center pt-3`}>
       <RxTriangleLeft />
       </div>
-      <div className='grid grid-col-1 mt-[5px] w-[57px]'>
+      <div className='hidden md:grid grid-col-1 mt-[5px] w-[57px] '>
         <div className={`${styles.key} ${styles.arrow} rounded-tl-md rounded-tr-md flex flex-col items-center`}>
         <RxTriangleUp />
           </div>
@@ -127,7 +127,7 @@ export function OptionKeysR() {
           </div>
       </div>
       <div
-        className={`${styles.key} flex flex-col w-[47px] items-center rounded-bl-md rounded-br-[22px] rounded-tl-md rounded-tr-md pt-3`}
+        className={`${styles.key} hidden md:flex flex-col w-[47px] items-center rounded-bl-md rounded-br-[22px] rounded-tl-md rounded-tr-md pt-3`}
       ><RxTriangleRight size='16'/></div>
     </>
   );

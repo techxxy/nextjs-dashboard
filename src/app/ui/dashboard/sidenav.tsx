@@ -22,7 +22,8 @@ export default function SideNav() {
         >
           <div className="rounded-lg bg-opacity-80 p-px  shadow-lg dark:bg-vc-border-gradient ">
             <div className="flex justify-between rounded-lg dark:bg-black  dark:bg-none">
-              <button className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:dark:text-primary duration-500 hover:bg-cyan-800  hover:dark:bg-transparent hover:text-white lg:flex-none lg:justify-start lg:p-2 lg:px-6">
+              <button className="flex h-[48px] w-full grow 
+              items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:dark:text-primary duration-500 hover:bg-cyan-800  hover:dark:bg-transparent hover:text-white lg:flex-none lg:justify-start lg:p-2 lg:px-6">
                 <PowerIcon className="w-6" />
                 <div className="hidden md:block">Logout</div>
               </button>

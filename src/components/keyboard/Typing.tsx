@@ -21,9 +21,7 @@ const Typing: React.FC<KeysProps> = ({
   textDisplayType= 'all',
 }
 ) => {
-
  
-
   // State variables
   const [selectedLayout, setSelectedLayout] = useState<string>('korean'); // State for selected keyboard layout
   const [completedLetters, setCompletedLetters] = useState<string>('');

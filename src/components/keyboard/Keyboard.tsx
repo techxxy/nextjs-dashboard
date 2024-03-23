@@ -14,7 +14,7 @@ interface KeysProps {
 }
 
 const Keyboard: React.FC<KeysProps> = ({
- language,
+  language,
   mode = 'original',
   nextClick,
   onClick,
@@ -111,23 +111,23 @@ const Keyboard: React.FC<KeysProps> = ({
       <div
         key={index}
         onClick={() => sendSelectedKey(keys)}
-        className={`${styles.key} w-[47px] items-end rounded-md`}
+        className={`${styles.key} w-[47px] flex-grow items-end rounded-md `}
       >
         {mode === 'simple' ? (
           <div className="pt-2.5">{selectedKey(keys)}</div>
         ) : (
-        <div className="flex flex-col items-center gap-1.5">
-          <div className="mt-1.5 text-[10px] leading-none">
-            {language === 'korean' || language === 'koreanShifted'
-              ? keys.koreanShifted
-              : keys.germanShifted}
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="mt-1.5 text-[10px] leading-none">
+              {language === 'korean' || language === 'koreanShifted'
+                ? keys.koreanShifted
+                : keys.germanShifted}
+            </div>
+            <div className="text-sm leading-none">
+              {language === 'korean' || language === 'koreanShifted'
+                ? keys.korean
+                : keys.german}
+            </div>
           </div>
-          <div className="text-sm leading-none">
-            {language === 'korean' || language === 'koreanShifted'
-              ? keys.korean
-              : keys.german}
-          </div>
-        </div>
         )}
       </div>
     ));
@@ -138,7 +138,7 @@ const Keyboard: React.FC<KeysProps> = ({
       <div
         key={index}
         onClick={() => sendSelectedKey(keys)}
-        className={`${styles.key} w-[47px] items-end rounded-md`}
+        className={`${styles.key} hidden w-[47px] flex-grow items-end rounded-md md:block`}
       >
         {mode === 'simple' ? (
           <div className="pt-2.5">{selectedKey(keys)}</div>
@@ -168,10 +168,10 @@ const Keyboard: React.FC<KeysProps> = ({
         className={`${styles.key} 
         ${
           nextClick === keys.korean
-            ? 'animate-gradient-shadow shadow-gradient-shadow'
+            ? 'animate-gradient-shadow-m md:animate-gradient-shadow'
             : ''
         }
-        w-[47px] items-end rounded-md `}
+        w-[47px] flex-grow items-end rounded-md `}
       >
         {mode !== 'original' ? (
           <div className="pt-2.5">{selectedKey(keys)}</div>
@@ -189,14 +189,14 @@ const Keyboard: React.FC<KeysProps> = ({
   };
 
   return (
-    <div className='justify-self-center mb-10'>
-      <div className={`${styles.keyboard}` }>
+    <div className="mb-10 w-full justify-self-center">
+      <div className={`${styles.keyboard}`}>
         {/* Function Keys */}
-        <div className="flex">
+        <div className="hidden md:flex">
           <FnKeys />
         </div>
         {/* Number Keys */}
-        <div className="flex">
+        <div className="hidden md:flex">
           <SymbolKeys start={0} end={1} />
           <NumKeys start={1} end={11} />
           <SymbolKeys start={11} end={13} />
@@ -207,11 +207,10 @@ const Keyboard: React.FC<KeysProps> = ({
             <MdOutlineBackspace size="15" />
           </div>
         </div>
-
         {/* Tab QWE row */}
         <div className="flex">
           <div
-            className={`${styles.key} flex w-20 items-end rounded-md pb-1 pl-2 text-xs`}
+            className={`${styles.key} hidden w-20 items-end rounded-md pb-1 pl-2 text-xs md:flex`}
           >
             <MdOutlineKeyboardTab size="16" />
           </div>
@@ -221,7 +220,7 @@ const Keyboard: React.FC<KeysProps> = ({
         {/* Capslock ASD row */}
         <div className="flex">
           <div
-            className={`${styles.key} flex w-24 flex-col items-start rounded-md pl-2`}
+            className={`${styles.key} hidden w-24 flex-col items-start rounded-md pl-2 md:flex`}
             onClick={onCapslockClick}
           >
             <div
@@ -242,7 +241,7 @@ const Keyboard: React.FC<KeysProps> = ({
           <SymbolKeys start={35} end={37} />
           <div
             onClick={() => onClick('Enter')}
-            className={`${styles.key} flex w-[86px]  flex-row-reverse items-end rounded-md pb-1 pr-2`}
+            className={`${styles.key} hidden w-[86px] flex-row-reverse  items-end rounded-md pb-1 pr-2 md:flex`}
           >
             <BsArrowReturnLeft />
           </div>
@@ -259,8 +258,14 @@ const Keyboard: React.FC<KeysProps> = ({
           <CharKeys start={37} end={44} />
           <SymbolKeys start={44} end={47} />
           <div
+            onClick={() => onClick('Backspace')}
+            className={`${styles.key} flex w-20 flex-row-reverse items-end rounded-md pb-1 pr-2 md:hidden`}
+          >
+            <MdOutlineBackspace size="15" />
+          </div>
+          <div
             onClick={onShiftClick}
-            className={`${styles.key} flex w-28 flex-row-reverse items-end rounded-md pb-1 pr-2`}
+            className={`${styles.key} hidden w-28 flex-row-reverse items-end rounded-md pb-1 pr-2 md:flex`}
           >
             <BsShift />
           </div>
@@ -270,14 +275,40 @@ const Keyboard: React.FC<KeysProps> = ({
           {/* Function Keys */}
           <OptionKeysL />
           <div
+            className={`${styles.key} md:hidden flex w-24 flex-col items-start rounded-md pl-2`}
+            onClick={onCapslockClick}
+          >
+            <div
+              id="capslock"
+              className={`${
+                language === 'korean'
+                  ? styles.capslock
+                  : language === 'koreanShifted'
+                  ? styles.capslock
+                  : ''
+              } mb-1 text-[11px]`}
+            >
+              &#x2022;
+            </div>
+            <div className="items-end pb-1 text-xs">한/A</div>
+          </div>
+
+          <div
             onClick={() => onClick(' ')}
-            className={`${styles.key} w-[254px] rounded-md`}
-          ></div>
+            className={`${styles.key} w-full flex-1 rounded-md`}
+          >
+            {' '}
+          </div>
+          <div
+            onClick={() => onClick('Enter')}
+            className={`${styles.key} flex w-[86px] flex-row-reverse  items-end rounded-md pb-1 pr-2 md:hidden`}
+          >
+            <BsArrowReturnLeft />
+          </div>
           <OptionKeysR />
         </div>
       </div>
     </div>
-
   );
 };
 

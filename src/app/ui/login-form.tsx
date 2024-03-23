@@ -9,7 +9,7 @@ import {
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/app/actions/auth';
+import { authenticate } from '@/services/auth';
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

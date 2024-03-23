@@ -1,5 +1,5 @@
 'use client'
-import { findUserByEmail, verifyEmail } from "@/app/actions/auth"
+import { findUserByEmail, verifyEmail } from "@/services/auth"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
