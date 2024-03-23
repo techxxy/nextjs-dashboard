@@ -15,7 +15,7 @@ const AlphabetsPage: React.FC = () => {
       size="small"
       animateRerendering={true}
     >
-        <Typing />
+        {/*<Typing />*/}
         
         </Boundary>
         </div>
