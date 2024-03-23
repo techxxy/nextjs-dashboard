@@ -1,31 +1,27 @@
-
 "use client"
-
-import {ThemeProvider} from 'next-themes';
-import { useState, useEffect } from 'react'
+import { ThemeProvider } from 'next-themes';
+import { useState, useEffect, ReactNode } from 'react';
 
 type Props = {
-    children: string | React.JSX.Element | React.JSX.Element[];
+  children: ReactNode;
+};
+
+const Provider = ({ children }: Props) => {
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <>{children}</>; // Render children without the ThemeProvider until mounted
   }
 
-const Provider = ({children} : Props) => {
-
-const [mounted,setMounted] = useState<boolean>(false);
-
-useEffect (() => {
-    setMounted(true);
-},[]);
-
-if(!mounted){
-    return <>{children}</>;
-}
-
-
   return (
-    <ThemeProvider enableSystem={true} attribute='class'>
+    <ThemeProvider enableSystem={true} attribute="class">
       {children}
     </ThemeProvider>
-  )
-}
+  );
+};
 
 export default Provider;

@@ -1,6 +1,10 @@
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
 import { Metadata } from 'next';
+import SideNav from './ui/dashboard/sidenav';
+import { AddressBar } from '@/components/ui/address-bar';
+import { GlobalNav } from '@/components/ui/global-nav';
+import ThemeSwitcher from '@/components/theme/thema-switcher';
 import Provider from '@/components/theme/provider';
 
 export const metadata: Metadata = {
@@ -34,7 +38,33 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <Provider>
-            {children}
+          <div className="flex h-screen w-screen flex-col lg:flex-row lg:overflow-hidden">
+
+            <div className="w-full lg:w-72 flex-none">
+              <SideNav />
+              {/*           <GlobalNav /> */}
+            </div>
+
+            <div className="flex-grow px-2 lg:overflow-y-auto lg:p-4">
+
+              <div className="rounded-lg bg-opacity-80 dark:bg-vc-border-gradient  p-px shadow-lg ">
+                <div className="flex justify-between rounded-lg dark:bg-none  dark:bg-black">
+
+                  <div  className=''>
+                  <AddressBar />
+                  </div>
+                  <div className=' my-auto mr-6'>
+                  <ThemeSwitcher />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 dark:bg-vc-border-gradient rounded-lg p-px shadow-lg dark:shadow-black/20">
+                  <div className="rounded-lg dark:bg-black dark:bg-none p-3.5 lg:p-6">{children}</div>
+              </div>
+            </div>
+
+          </div>
         </Provider>
       </body>
     </html>
