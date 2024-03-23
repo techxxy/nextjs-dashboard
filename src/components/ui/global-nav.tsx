@@ -1,6 +1,6 @@
 'use client';
 
-import { menus, type Item } from '@/lib/menus';
+import { menus, type Item } from '@/components/navigation/menus';
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { RiCloseFill, RiMenu2Fill } from 'react-icons/ri';

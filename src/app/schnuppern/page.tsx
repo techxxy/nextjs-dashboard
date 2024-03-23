@@ -1,32 +1,18 @@
-"use client"
+'use client';
 import React, { useState } from 'react';
 import Typing from '@/components/keyboard/Typing';
 import type { WordPair } from '@/lib/definitions';
 
 const SchnuppernPage: React.FC = () => {
-
   return (
-     <>
-{/*              <Boundary
-        labels={['Koreanisches Alphabet']}
-        color="default"
-        size="small"
-        animateRerendering={true}
-      >
-           <h1 className='mb-4 text-5xl font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-5xl '><span className="text-blue-600 dark:text-blue-500">한글</span> Koreanisches Alphabet</h1>
-      <p className='text-gray-1000'>Schreiben Sie deutsche Wörter auf Koreanisch Schrift, Hangul.</p>
-      <p className='text-gray-1000'>Hangul ist wie deutsch Alphabet, das Laute darstellt. </p>
-      <p className='text-gray-1000'>Ein Hangul-Zeichen entspricht einer Silbe. </p>
-      </Boundary> */}
-
-<Typing 
-      keyboardMode="original"
-      showKeyboardSelector={false}
-      textDisplayType="pair"
-      wordSet={schnuppernWords}
-/>
-   
-      </>
+    <>
+      <Typing
+        keyboardMode="original"
+        showKeyboardSelector={false}
+        textDisplayType="pair"
+        wordSet={schnuppernWords}
+      />
+    </>
   );
 };
 
@@ -39,7 +25,6 @@ const schnuppernWords: WordPair = [
   { german: 'Kugel', korean: '쿠겔' },
   { german: 'man', korean: '만' },
   { german: 'Nutella', korean: '누텔라' },
-
 ];
 
 const vowelStartingWords: WordPair = [
@@ -57,7 +42,6 @@ const vowelStartingWords: WordPair = [
   { german: 'nun', korean: '눈' },
   { german: 'Datum', korean: '다툼' },
 
-
   { german: 'oben', korean: '오벤' },
   { german: 'in', korean: '인' },
   { german: 'um', korean: '움' },
@@ -68,5 +52,4 @@ const vowelStartingWords: WordPair = [
   { german: 'Ende', korean: '엔데' },
   { german: 'jung', korean: '융' },
   { german: 'unten', korean: '운텐튼' },
-
 ];

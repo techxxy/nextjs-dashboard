@@ -6,7 +6,7 @@ export type Item = {
   
   export const menus: { name: string; items: Item[] }[] = [
     {
-      name: 'Alphabet',
+      name: 'Hangul',
       items: [
         {
           name: 'Schnuppern',
@@ -14,8 +14,8 @@ export type Item = {
           description: 'Schreiben Sie deutsche Wörter, wie sie klingen, auf Koreanisch.',
         },
         {
-          name: 'Alphabets',
-          slug: 'vowel',
+          name: 'Hangul',
+          slug: 'hangul',
           description: 'Organize routes without affecting URL paths',
         },
       ],
