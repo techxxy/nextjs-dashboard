@@ -2,11 +2,11 @@
 import { findUserByEmail, verifyEmail } from "@/services/auth"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 
-// Defining the Email Verification Component
-export default function VerifyEmail() {
+function Verify(){
     console.log("function VerifyEmail()");
+
     // Accessing search parameters from the URL
     const searchParams = useSearchParams()
 
@@ -62,11 +62,24 @@ export default function VerifyEmail() {
         <>
             {/* Displaying loading or result message */}
             <div className='mb-4'>{isLoading ? 'Please wait ...' : result}</div>
-            
+
             {/* Navigation link back to the login page */}
             <div className='my-3'>
                 <Link href='/login' className='bg-white py-3 px-2 rounded'>Back to Login</Link>
             </div>
         </>
+    )
+}
+
+
+
+
+// Defining the Email Verification Component
+export default function VerifyEmail() {
+    return (
+        // You could have a loading skeleton as the `fallback` too
+        <Suspense>
+            <Verify />
+        </Suspense>
     )
 }
