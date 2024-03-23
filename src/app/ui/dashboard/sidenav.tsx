@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import NavLinks from '@/app/ui/dashboard/nav-links';
 import { GlobalNav } from '@/components/ui/global-nav';
-import Logout from '@/services/logout';
+import LogoutButton from '@/components/ui/logout-button';
 import GradientBorder from '@/components/ui/gradient-border';
 
 
@@ -20,7 +20,7 @@ teste
      </GradientBorder>
 
         <div className="hidden h-auto w-full grow rounded-md bg-transparent border-2 md:block">filling a gap box</div>
-        <Logout />
+        <LogoutButton />
        
       </div>
     </div>
