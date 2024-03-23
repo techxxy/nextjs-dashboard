@@ -39,6 +39,10 @@ const schnuppernWords: WordPair = [
   { german: 'Kugel', korean: '쿠겔' },
   { german: 'man', korean: '만' },
   { german: 'Nutella', korean: '누텔라' },
+
+];
+
+const vowelStartingWords: WordPair = [
   { german: 'du', korean: '두' },
   { german: 'haben', korean: '하벤' },
   { german: 'gut', korean: '궅' },
@@ -52,9 +56,8 @@ const schnuppernWords: WordPair = [
   { german: 'denken', korean: '덴켄' },
   { german: 'nun', korean: '눈' },
   { german: 'Datum', korean: '다툼' },
-];
 
-const vowelStartingWords: WordPair = [
+
   { german: 'oben', korean: '오벤' },
   { german: 'in', korean: '인' },
   { german: 'um', korean: '움' },
