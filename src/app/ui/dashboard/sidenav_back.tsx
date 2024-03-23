@@ -15,7 +15,6 @@ export default function SideNav() {
 
       <div className="flex grow flex-row justify-between space-x-2 lg:flex-col lg:space-x-0 lg:space-y-2">
         <NavLinks />
-
         <div className="hidden h-auto w-full grow rounded-md bg-gray-50 lg:block">
         </div>
         
