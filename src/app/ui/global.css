@@ -16,23 +16,27 @@
 @layer base {
   :root {
     --color-primary: 12 12 12;
+    --color-primaryR: 256 256 265;
     --color-text:  60 60 60;
     --color-success: 0 200 81;
     --color-info: 51 181 229;
     --color-warn: 255 187 51;
     --color-error: 254 78 78;
     --color-basic: 249 249 249;
-    --color-accent: 37 99 235;
+    --color-basicR: 23 23 23;
+    --color-accent: 21 94 117;
   }
 
   :root[class~="dark"] {
     --color-primary:  256 256 265;
+    --color-primaryR: 12 12 12;
     --color-text: 180 180 180;
     --color-success: 0 200 81;
     --color-info: 51 181 229;
     --color-warn: 255 187 51;
     --color-error: 254 78 78;
     --color-basic: 23 23 23;
+    --color-basicR: 249 249 249;
     --color-accent: 247 147 34;
   }
 }

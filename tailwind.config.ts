@@ -10,6 +10,9 @@ const config: Config = {
   darkMode:'class',
   theme: {
     extend: {
+      rotate: {
+        '10': '10deg',
+      },
       animation: {
         'gradient-shadow': 'gradient-shadow 2s infinite',
         'gradient-shadow-m': 'gradient-shadow-m 2s infinite',
@@ -25,13 +28,15 @@ const config: Config = {
       },
       colors: {
         primary: "rgb(var(--color-primary) / <alpha-value>)",
+        primaryR: "rgb(var(--color-primaryR) / <alpha-value>)",
         text: "rgb(var(--color-text) / <alpha-value>)",
         success: "rgb(var(--color-success) / <alpha-value>)",
         info: "rgb(var(--color-info) / <alpha-value>)",
         warn: "rgb(var(--color-warn) / <alpha-value>)",
         error: "rgb(var(--color-error) / <alpha-value>)",
         basic: "rgb(var(--color-basic) / <alpha-value>)",
-        accent: "rgb(var(--color-basic) / <alpha-value>)",
+        basicR: "rgb(var(--color-basicR) / <alpha-value>)",
+        accent: "rgb(var(--color-accent) / <alpha-value>)",
         transparent: "transparent",
         current: "currentColor",
         gray: colors.zinc,
@@ -55,6 +60,14 @@ const config: Config = {
         )}, 50px, ${theme('colors.gray.300')} 50%)`,
       }),
       keyframes: ({ theme }) => ({
+        'rotate-m': {
+          '0%': {
+            transform: 'rotate(-20deg)',
+          },
+          '100%': {
+            transform: 'rotate(20deg)',
+          },
+        },
         'gradient-shadow': {
           '0%': {
             boxShadow: 'inset 0 0 25px #ffffff, 0 2px 0 #6c6c6c, 1px 3px 0 #484848, 0 2px 0 #c9c9c9, 0 2px 3px #333',

@@ -3,7 +3,7 @@ import { inter } from '@/app/ui/fonts';
 import SideNav from '../ui/dashboard/sidenav';
 import { AddressBar } from '@/components/ui/address-bar';
 import { GlobalNav } from '@/components/ui/global-nav';
-import ThemeSwitcher from '@/components/theme/thema-switcher';
+import ThemeSwitcher from '@/components/theme/theme-switcher';
 import Provider from '@/components/theme/provider';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="">
                 <AddressBar />
               </div>
-              <div className=" my-auto mr-6">
+              <div className="my-auto mr-6">
                 <ThemeSwitcher />
               </div>
             </div>

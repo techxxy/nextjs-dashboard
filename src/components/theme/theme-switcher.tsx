@@ -6,7 +6,11 @@ import { MoonIcon } from '@heroicons/react/24/solid';
 import { GoMoon } from 'react-icons/go';
 import { useState } from 'react';
 
-const ThemeSwitcher = () => {
+export default function ThemeSwitcher ({
+  className,
+}: {
+  className?: string;
+}) {
   const { systemTheme, theme, setTheme } = useTheme();
 
   const renderThemeChanger = () => {
@@ -48,5 +52,3 @@ const ThemeSwitcher = () => {
 
   return <>{renderThemeChanger()}</>;
 };
-
-export default ThemeSwitcher;
