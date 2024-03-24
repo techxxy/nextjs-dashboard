@@ -7,7 +7,7 @@ function Params() {
   const searchParams = useSearchParams()!;
 
   return searchParams.toString().length !== 0 ? (
-    <div className="px-2 text-gray-500">
+    <div className="px-2">
       <span>?</span>
       {Array.from(searchParams.entries()).map(([key, value], index) => {
         return (
@@ -40,7 +40,7 @@ export function AddressBar() {
 
   return (
     <div className="flex items-center gap-x-2 p-3.5 ">
-      <div className="text-gray-600">
+      <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="1.5em"
@@ -55,11 +55,11 @@ export function AddressBar() {
       </div>
       <div className="flex gap-x-1 text-sm font-medium">
         <div>
-          <span className="px-2 dark:text-gray-400">Fire up Korean Alphabet</span>
+          <span className="px-2">Fire up Korean Alphabet</span>
         </div>
         {pathname ? (
           <>
-            <span className="dark:text-gray-600">/</span>
+            <span>/</span>
             {pathname
               .split('/')
               .slice(1)
@@ -69,13 +69,13 @@ export function AddressBar() {
                     <span>
                       <span
                         key={segment}
-                        className="animate-[highlight_1s_ease-in-out_1] rounded-full px-1.5 py-0.5 dark:text-gray-100"
+                        className="animate-[highlight_1s_ease-in-out_1] rounded-full px-1.5 py-0.5 text-primary"
                       >
                         {segment}
                       </span>
                     </span>
 
-                    <span className="text-gray-600">/</span>
+                    <span>/</span>
                   </React.Fragment>
                 );
               })}

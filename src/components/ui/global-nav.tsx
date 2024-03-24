@@ -22,7 +22,7 @@ export function GlobalNav() {
             className="group flex items-center gap-x-2.5"
             onClick={close}
           >
-            <h3 className="font-semibold tracking-wide text-white group-hover:text-gray-200">
+            <h3 className="font-semibold tracking-wide text-primary group-hover:text-gray-200">
               Fire up Korean Alphabet
             </h3>
           </Link>

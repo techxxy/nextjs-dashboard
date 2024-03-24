@@ -5,6 +5,7 @@
   margin: 10px auto 10px auto;
   padding: 6px;
   width: 100%;
+  max-width: 850px;
   height: fit-content;
   background: #bec4c6;
   /* not selectable text */

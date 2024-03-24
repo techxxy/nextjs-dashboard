@@ -30,6 +30,8 @@ const config: Config = {
         info: "rgb(var(--color-info) / <alpha-value>)",
         warn: "rgb(var(--color-warn) / <alpha-value>)",
         error: "rgb(var(--color-error) / <alpha-value>)",
+        basic: "rgb(var(--color-basic) / <alpha-value>)",
+        accent: "rgb(var(--color-basic) / <alpha-value>)",
         transparent: "transparent",
         current: "currentColor",
         gray: colors.zinc,

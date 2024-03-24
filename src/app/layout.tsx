@@ -1,11 +1,8 @@
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
-import SideNav from './ui/dashboard/sidenav';
-import { AddressBar } from '@/components/ui/address-bar';
-import { GlobalNav } from '@/components/ui/global-nav';
-import ThemeSwitcher from '@/components/theme/thema-switcher';
 import Provider from '@/components/theme/provider';
 import { Metadata } from 'next';
+import NavBar from '@/components/navigation/nav-bar';
 
 export const metadata: Metadata = {
   title: {
@@ -16,7 +13,7 @@ export const metadata: Metadata = {
     'Spaß, Entspannung, Gestärkt: Verwöhnen Sie sich mit einer hochwertigen koreanischen Lernplattform! Diese Webseite wurde für deutschsprachige Nutzer entwickelt, die Koreanisch als Anfänger lernen möchten. Wir verstehen, dass das Erlernen einer Fremdsprache eine Herausforderung darstellt, insbesondere für Erwachsene, die möglicherweise nicht die Zeit haben, wie Schüler viel Zeit für den Lernprozess aufzuwenden. Unsere Webseite bietet eine benutzerfreundliche und unterhaltsame Lernumgebung, die speziell darauf abzielt, deutschsprachigen Benutzern dabei zu helfen, Koreanisch effektiv und effizient zu erlernen. Tauchen Sie ein in eine Welt des Sprachenlernens, die auf Ihre Bedürfnisse zugeschnitten ist',
   metadataBase: new URL('https://techxxy.github.io/'),
   icons: {
-    icon:"/images/favicon.svg"
+    icon: '/images/favicon.svg',
   },
   openGraph: {
     title: 'Fire up Korean Alphabet',
@@ -37,9 +34,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-      <Provider>
-      {children}
-      </Provider>
+        <Provider>
+          <NavBar />
+          {children}
+        </Provider>
       </body>
     </html>
   );

@@ -20,8 +20,6 @@ const WordPairDisplay: React.FC<KeysProps> = ({
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [vocaburaryHint, setDisassembledKorean] = useState<string>('');
 
-  console.log('wordPair', wordSet);
-
   useEffect(() => {
     // Shuffle the array
     const shuffled = shuffleArray(wordSet);
@@ -88,7 +86,7 @@ const shuffleArray = (array: { german: string; korean: string; }[]): { german: s
 
   return (
   <div className='max-w-[800px] min-w-[450px]'>
-    <div className="m-auto grid h-[320px] w-fit grid-cols-1 text-gray-700">
+    <div className="m-auto grid h-[320px] w-fit grid-cols-1">
       <div className="grid w-fit grid-cols-1 justify-self-center">
         <div
           className={`${

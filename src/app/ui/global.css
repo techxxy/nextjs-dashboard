@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Inconsolata|Source-Code-Pro&effect=fire-animation|neon');
 
@@ -7,28 +8,32 @@
 
 @layer base{
   body {
-      @apply dark:bg-gray-900 bg-white
+    @apply bg-basic;
+    @apply text-text;
   }
 }
 
 @layer base {
-
   :root {
-    --color-primary: 37 99 235;
-    --color-text: 33 33 33;
+    --color-primary: 12 12 12;
+    --color-text:  60 60 60;
     --color-success: 0 200 81;
     --color-info: 51 181 229;
     --color-warn: 255 187 51;
     --color-error: 254 78 78;
+    --color-basic: 249 249 249;
+    --color-accent: 37 99 235;
   }
 
   :root[class~="dark"] {
-    --color-primary: 247 147 34;
-    --color-text: 33 33 33;
+    --color-primary:  256 256 265;
+    --color-text: 180 180 180;
     --color-success: 0 200 81;
     --color-info: 51 181 229;
     --color-warn: 255 187 51;
     --color-error: 254 78 78;
+    --color-basic: 23 23 23;
+    --color-accent: 247 147 34;
   }
 }
 
