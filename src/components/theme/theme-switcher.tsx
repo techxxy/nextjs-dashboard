@@ -20,7 +20,7 @@ export default function ThemeSwitcher ({
     if (currentTheme === 'dark') {
       return (
         <SunIcon
-          className="h-6 w-6 transform text-amber-500 transition duration-500 hover:rotate-45"
+          className={`h-6 w-6 transform text-amber-500 transition duration-500 hover:rotate-45 ${className}`}
           role="button"
           onClick={() => setTheme('light')}
         />
@@ -29,7 +29,7 @@ export default function ThemeSwitcher ({
       return (
         <>
     <GoMoon
-      className="h-6 w-6 text-gray-500"
+      className={`h-6 w-6 text-gray-500 ${className}`}
       style={{
         transform: `rotate(${isHovered ? '15deg' : '-20deg'})`,
         transition: 'transform 0.5s',
@@ -40,11 +40,6 @@ export default function ThemeSwitcher ({
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setTheme('dark')}
     />
-          {/*         <MoonIcon
-          className="h-6 w-6 text-gray-500 transition duration-500 transform hover:rotate-45"
-          role="button"
-          onClick={() => setTheme('dark')}
-        /> */}
         </>
       );
     }

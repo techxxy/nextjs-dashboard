@@ -1,6 +1,6 @@
 import { PowerIcon } from '@heroicons/react/24/outline';
 import { signOut } from '@/auth';
-import GradientBorder from './gradient-border';
+import GradientBorder from '../gradient-border';
 
 export default function LogoutButton() {
   return (
