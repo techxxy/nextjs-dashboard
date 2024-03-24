@@ -14,7 +14,7 @@ export default function NakidLinkButton({
   return (
     <Link
       href={href}
-      className={`${className} flex h-8 items-center rounded-lg px-4 text-base font-medium text-basicR underline transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-text`}
+      className={`${className} flex h-9 items-center rounded-lg px-4 text-base font-medium text-basicR underline transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-text`}
       aria-disabled={href === null ? 'true' : 'false'}
     >
       <span>{children}</span>

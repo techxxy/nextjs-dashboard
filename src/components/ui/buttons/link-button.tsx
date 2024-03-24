@@ -14,7 +14,7 @@ export default function LinkButton({
   return (
     <Link
       href={href}
-      className={`${className} flex h-8 items-center rounded-md bg-primary pl-3 text-sm font-medium text-basic transition-colors hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-text`}
+      className={`${className} flex h-9 items-center rounded-md bg-primary pl-3 text-sm font-medium text-basic transition-colors hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-text`}
       aria-disabled={href === null ? 'true' : 'false'}
     >
       <span>{children}</span>

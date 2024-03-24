@@ -4,9 +4,15 @@ import ThemeSwitcher from '../theme/theme-switcher';
 import GradientBorder from '../ui/gradient-border';
 import LinkButton from '../ui/buttons/link-button';
 import NakidLinkButton from '../ui/buttons/link-button-nakid';
+import LogoutButton from '../ui/buttons/logout-button';
+import LoginLogout from './login-logout';
 
-export default function NavBar() {
-  return (
+export default function NavBa({
+  className,
+}: {
+  className?: string;
+}) { return (
+  <div className={`${className}`}>
     <GradientBorder>
       <div className="flex flex-row items-center justify-between p-2">
       <div className="ml-4" >
@@ -20,13 +26,13 @@ export default function NavBar() {
         </Link>
         </div>
         <div className="flex flex-row items-center justify-between">
-        <NakidLinkButton href='/login' className='mr-3'>
-          Login
-        </NakidLinkButton>
+        <NakidLinkButton href='/login' className='mr-3'> Login </NakidLinkButton>
         <LinkButton href="/signup" className='mr-6'>Sign Up</LinkButton>
+        <LogoutButton className="border h-9 px-2 mr-6"/>
         <ThemeSwitcher className='mr-6'/>
         </div>
       </div>
     </GradientBorder>
+    </div>
   );
 }

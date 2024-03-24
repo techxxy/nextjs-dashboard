@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <Provider>
-          <NavBar />
+          <NavBar className='m-0 md:m-4'/>
           {children}
         </Provider>
       </body>
