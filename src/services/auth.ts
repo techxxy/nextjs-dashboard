@@ -11,7 +11,6 @@ import { randomBytes } from 'crypto';
 import { redirect } from 'next/navigation';
 import { EmailNotVerifiedError } from '@/errors';
 
-// Authenticating function for sign-in
 export async function authenticate(prevState: string | undefined, formData: FormData) {
   try {
     await isUsersEmailVerified(formData.get('email') as string);
@@ -26,7 +25,6 @@ export async function authenticate(prevState: string | undefined, formData: Form
           return 'Something went wrong.';
       }
     }
-
     // Handling email verification errors
     if (error instanceof EmailNotVerifiedError) {
       return error?.message;

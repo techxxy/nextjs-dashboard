@@ -15,17 +15,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="flex-grow px-2 lg:overflow-y-auto lg:p-4">
-          <div className="rounded-lg bg-opacity-80 p-px  shadow-lg dark:bg-vc-border-gradient ">
-            <div className="flex justify-between rounded-lg dark:bg-black  dark:bg-none">
-              <div className="">
-                <AddressBar />
-              </div>
-              <div className="my-auto mr-6">
-                <ThemeSwitcher />
-              </div>
-            </div>
-          </div>
-
           <div className="mt-4 rounded-lg p-px shadow-lg dark:bg-vc-border-gradient dark:shadow-black/20">
             <div className="rounded-lg p-3.5 dark:bg-black dark:bg-none lg:p-6">
               {children}

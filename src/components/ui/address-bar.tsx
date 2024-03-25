@@ -36,21 +36,12 @@ function Params() {
   ) : null;
 }
 
-export function AddressBar() {
+export function AddressBar({ className }: { className?: string }) {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center gap-x-2 p-3.5 ">
-      <div>
-      <Image
-      src="/images/flame.svg"
-      width={24}
-      height={24}
-      alt="Flame logo"
-    />
-
-      </div>
-      <div className="flex gap-x-1 text-sm font-medium">
+    <div className={`items-center h-fit ${className}`}>
+      <div className="flex text-sm font-medium">
         <div>
           <span className="px-2">Fire up Korean Alphabet</span>
         </div>
