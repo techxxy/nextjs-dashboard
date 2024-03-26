@@ -9,10 +9,9 @@ import {
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '../../components/ui/buttons/button';
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/services/auth';
+import { authenticate } from '@/services/authenticate';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import GradientBorder from '@/components/ui/gradient-border';
 
 export default function LoginForm() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
@@ -23,7 +22,7 @@ export default function LoginForm() {
 
   return (
     <form action={dispatch} className="space-y-3">
-        <div className="flex-1 rounded-lg px-6 pb-4 pt-8">
+        <div className="flex-1 rounded-lg px-6 pb-4 pt-8 border-4">
           <h1 className={`${lusitana.className} mb-3 text-2xl`}>
             Please log in to continue.
           </h1>
@@ -56,7 +55,7 @@ export default function LoginForm() {
               </label>
               <div className="relative">
                 <input
-                  className="peer block w-full rounded-md border py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                  className="peer block w-full rounded-md border py-[9px] pl-10 text-sm outline-2   placeholder:text-gray-500"
                   id="password"
                   type="password"
                   name="password"

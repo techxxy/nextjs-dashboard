@@ -10,7 +10,7 @@ import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '../../../components/ui/buttons/button';
 import { useFormState, useFormStatus } from 'react-dom';
 import Link from "next/link";
-import { signUp } from "@/services/auth";
+import { signUp } from "@/services/actions";
 
 export default function SignUpForm() {
   const [errorMessage, dispatch] = useFormState(signUp, {

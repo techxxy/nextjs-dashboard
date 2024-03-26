@@ -1,8 +1,11 @@
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
-import Provider from '@/components/theme/provider';
+import DarkModeProvider from '@/components/theme/dark-mode-provider';
 import { Metadata } from 'next';
 import NavBar from '@/components/navigation/nav-bar';
+import { SessionProvider } from "next-auth/react"
+import { auth } from "@/auth"
+import { Session } from 'next-auth';
 
 export const metadata: Metadata = {
   title: {
@@ -26,18 +29,30 @@ export const metadata: Metadata = {
   }, */
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+
 }: {
   children: React.ReactNode;
 }) {
+
+  //let email: string | null | undefined;
+  let session = await auth();
+  let email = session?.user?.email;
+/*   auth().then((value:Session | null) => {
+    console.log('value:    ',value);
+    console.log('email:    ',value?.user?.email);
+    email = value?.user?.email;
+    console.log('email:    ',email);
+  }); */
+
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <Provider>
-          <NavBar className=''/>
+        <DarkModeProvider>
+          <NavBar email={email}/>
           {children}
-        </Provider>
+        </DarkModeProvider>
       </body>
     </html>
   );

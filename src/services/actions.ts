@@ -11,7 +11,7 @@ import { randomBytes } from 'crypto';
 import { redirect } from 'next/navigation';
 import { EmailNotVerifiedError } from '@/errors';
 
-export async function authenticate(prevState: string | undefined, formData: FormData) {
+/* export async function authenticate(prevState: string | undefined, formData: FormData) {
   try {
     await isUsersEmailVerified(formData.get('email') as string);
     await signIn('credentials', formData);
@@ -34,7 +34,7 @@ export async function authenticate(prevState: string | undefined, formData: Form
     throw error;
   }
 console.log("testing=========================");
-}
+} */
 
 // Defining the schema for sign-up form validation
 const signUpSchema = z.object({
@@ -121,10 +121,10 @@ export async function signUp(formState: SignUpFormState, formData: FormData):
 
 }
 
-// Function to handle user logout
+/* // Function to handle user logout
 export async function logout() {
   return await signOut();
-}
+} */
 
 // Function to find a user by email in the database
 export const findUserByEmail = async (email: string) => {
@@ -217,7 +217,7 @@ export const verifyEmail = (email: string) => {
   });
 };
 
-// Function to check if a user's email is verified
+/* // Function to check if a user's email is verified
 export const isUsersEmailVerified = async (email: string) => {
   const user = await db.user.findFirst({
     where: { email },
@@ -230,4 +230,4 @@ export const isUsersEmailVerified = async (email: string) => {
   if (!user?.emailVerifiedAt) throw new EmailNotVerifiedError(`EMAIL_NOT_VERIFIED:${email}`);
 
   return true;
-};
+}; */

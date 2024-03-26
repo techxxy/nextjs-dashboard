@@ -6,7 +6,7 @@ type Props = {
   children: ReactNode;
 };
 
-const Provider = ({ children }: Props) => {
+const DarkModeProvider = ({ children }: Props) => {
   const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -24,4 +24,4 @@ const Provider = ({ children }: Props) => {
   );
 };
 
-export default Provider;
+export default DarkModeProvider;

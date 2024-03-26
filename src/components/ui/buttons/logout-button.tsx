@@ -1,7 +1,7 @@
 "use client"
 import { PowerIcon } from '@heroicons/react/24/outline';
 import React from "react";
-import { logout } from '@/services/auth';
+import { logout } from '@/services/authenticate';
 
 export default function Logout({
   className,

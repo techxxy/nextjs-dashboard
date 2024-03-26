@@ -9,8 +9,11 @@ import NakidLinkButton from '../ui/buttons/link-button-nakid';
 import Logout from '../ui/buttons/logout-button';
 import { AddressBar } from '../ui/address-bar';
 
-export default function NavBar({ className }: { className?: string }) {
+export default function NavBar({ className, email}: { className?: string; email: string | null | undefined}) {
+ 
+  console.log('email',email );
   return (
+
     <div className={`${className}`}>
       <GradientBorder>
         <div className="flex flex-row items-center justify-between p-2">
@@ -29,6 +32,7 @@ export default function NavBar({ className }: { className?: string }) {
               </svg>
             </Link>
             <AddressBar className="hidden md:flex" />
+            <div>{email}</div>
           </div>
 
           <div className="flex flex-row items-center justify-between">
@@ -46,5 +50,8 @@ export default function NavBar({ className }: { className?: string }) {
         </div>
       </GradientBorder>
     </div>
+
   );
 }
+
+

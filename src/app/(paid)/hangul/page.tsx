@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { menus } from '@/components/navigation/menus';
 
 export default function Page() {
+
   return (
     <main className='space-x-2'>
       <div className="space-y-8">
@@ -43,6 +44,7 @@ export default function Page() {
           })}
         </div>
       </div>
+      text
     </main>
   );
 }
